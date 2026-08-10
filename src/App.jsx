@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import TallyLeadForm from './TallyLeadForm.jsx'
+import LeadApplicationForm from './LeadApplicationForm.jsx'
+import { findReferralPartner } from './referralPartners.js'
 
 const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 
@@ -570,7 +571,7 @@ function Faq() {
     ],
     [
       'Как подтвердить участие?',
-      'Напишите слово «БОЛГАРИЯ» Наталье Масловой в Telegram. В ответ вы получите полную программу, условия оплаты и отмены.',
+      'Оставьте короткую заявку в конце страницы. Наталья свяжется с вами, пришлёт полную программу, условия оплаты и отмены.',
     ],
   ]
 
@@ -590,24 +591,27 @@ function Faq() {
 }
 
 function Contact({ attribution }) {
+  const partner = findReferralPartner(attribution.credited_ref)
+
   return (
     <section className="contact" id="contact" aria-labelledby="contact-title">
-      <div>
-        <h2 id="contact-title">Получите полную программу и условия участия</h2>
+      <div className="contact-copy">
+        <h2 id="contact-title">Оставьте заявку на участие</h2>
         <p>
-          Напишите «БОЛГАРИЯ» организатору Наталье Масловой. Ответ придёт в личной переписке в Telegram.
+          Выберите формат, оставьте контакт — Наталья Маслова пришлёт полную программу и ответит на вопросы лично.
         </p>
+        {partner && (
+          <div className="referral-attribution" role="status" aria-label={`Реферальный партнёр: ${partner.name}`}>
+            <img src={asset(partner.image)} alt="" aria-hidden="true" />
+            <div>
+              <span>По приглашению</span>
+              <strong>{partner.name}</strong>
+              <small>Реферальная ссылка учтена в заявке</small>
+            </div>
+          </div>
+        )}
       </div>
-      <div className="contact-actions">
-        <a href={organizerTelegramUrl} target="_blank" rel="noreferrer">
-          <span>Telegram · Организатор</span>
-          <strong>Наталья Маслова · @maslovanataly</strong>
-          <ArrowIcon />
-        </a>
-      </div>
-      <div className="lead-form-slot" id="lead-form" data-form-slot>
-        <TallyLeadForm attribution={attribution} />
-      </div>
+      <LeadApplicationForm attribution={attribution} partner={partner} />
     </section>
   )
 }
