@@ -86,7 +86,7 @@
 | `referrer_name` | Single line text | имя партнёра, вычисленное Worker из проверенного `credited_ref` |
 | `Статус` | Single select | default `Новая` |
 | `Статус оплаты` | Single select | default `Не выставлено` |
-| `Дата заявки` | Created time | Airtable, не клиент |
+| `Дата заявки` | Created time | Airtable, не клиент — поле только для чтения, Worker его не отправляет |
 
 Для атрибуции создайте поля с точными именами ниже. Значения `touch_at_*` удобнее хранить как date/time, остальные — как text:
 
@@ -127,7 +127,9 @@ Production Worker должен соблюдать минимальный кон�
 - не логировать полный payload с персональными данными и не возвращать клиенту внутренний ответ Airtable;
 - возвращать короткие JSON-ошибки без token, base ID, stack trace и деталей upstream.
 
-Реализация уже находится в `worker/src/index.js`, конфигурация — в `wrangler.jsonc`. Она использует `AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE_ID`, `ALLOWED_ORIGINS`, `TURNSTILE_HOSTNAMES` и `TURNSTILE_ACTION`. Personal Access Token выдаётся с scope `data.records:write` и доступом только к базе `appr12dTRITFID8eg`. Token и `TURNSTILE_SECRET` хранятся как Cloudflare Secrets, не как Vite/GitHub Pages variables.
+Реализация уже находится в `worker/src/index.js`, конфигурация — в `wrangler.jsonc`. Она использует `AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE_ID`, `ALLOWED_ORIGINS`, `TURNSTILE_HOSTNAMES` и `TURNSTILE_ACTION`. Рабочая база — `appjaHCUKxthrm3zI`, таблица `Заявки` — `tbl9P4xP0rrsimyo8`. Personal Access Token выдаётся со scope `data.records:write` и доступом только к этой базе; для `npm run airtable:schema` дополнительно нужен `schema.bases:read`. Token и `TURNSTILE_SECRET` хранятся как Cloudflare Secrets, не как Vite/GitHub Pages variables.
+
+Worker адресует поля по ID, а не по имени, поэтому переименование колонки в Airtable его не ломает — а вот удаление или пересоздание поля ломает. Актуальные ID выводит `npm run airtable:schema -- appjaHCUKxthrm3zI`; после изменения схемы обновите карту `airtableFields` в `worker/src/index.js` и список в тесте `Worker sends only writable fields...`.
 
 ```bash
 npx wrangler secret put AIRTABLE_TOKEN

@@ -4,9 +4,9 @@
   "main": "worker/src/index.js",
   "compatibility_date": "2026-08-10",
   "vars": {
-    "AIRTABLE_BASE_ID": "appr12dTRITFID8eg",
-    "AIRTABLE_TABLE_ID": "tbllP9xxSHhpYvz2S",
-    "ALLOWED_ORIGINS": ["http://localhost:5173"],
+    "AIRTABLE_BASE_ID": "appjaHCUKxthrm3zI",
+    "AIRTABLE_TABLE_ID": "tbl9P4xP0rrsimyo8",
+    "ALLOWED_ORIGINS": ["https://maslova9972.github.io/Bulgaria_2026/"],
     "TURNSTILE_HOSTNAMES": ["localhost"],
     "TURNSTILE_ACTION": "lead_submit"
   }

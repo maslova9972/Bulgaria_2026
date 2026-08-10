@@ -6,8 +6,8 @@ const origin = 'https://example.github.io'
 const now = Date.parse('2026-08-10T18:00:00.000Z')
 const env = {
   ALLOWED_ORIGINS: [origin],
-  AIRTABLE_BASE_ID: 'appr12dTRITFID8eg',
-  AIRTABLE_TABLE_ID: 'tbllP9xxSHhpYvz2S',
+  AIRTABLE_BASE_ID: 'appjaHCUKxthrm3zI',
+  AIRTABLE_TABLE_ID: 'tbl9P4xP0rrsimyo8',
   AIRTABLE_TOKEN: 'test-token',
 }
 
@@ -98,16 +98,66 @@ test('valid lead maps server-owned CRM values and latest valid referral', async 
 
   assert.equal(response.status, 201)
   assert.equal(result.ok, true)
-  assert.match(airtableCall.url, /appr12dTRITFID8eg\/tbllP9xxSHhpYvz2S$/)
+  assert.match(airtableCall.url, /appjaHCUKxthrm3zI\/tbl9P4xP0rrsimyo8$/)
   assert.equal(airtableCall.options.headers.Authorization, 'Bearer test-token')
   assert.equal(requestBody.typecast, false)
-  assert.equal(fields.fld87pCd4Saz42kz3, 'Новая')
-  assert.equal(fields.fldAMhqh7XQr6ZNYX, 'Полный пакет · 2 человека')
-  assert.equal(fields.fldrIh0z5O2L5sms1, 2)
-  assert.equal(fields.fldlzjRPkisohRcm4, 700)
-  assert.equal(fields.fldJYtM0NPR5TDC7u, 'tamara-guseva')
-  assert.equal(fields.fldNQCnboQ9horVgg, 'Тамара Гусева')
-  assert.equal(fields.flduI1VTbHMkq93vj, 'anna@example.com')
+  assert.equal(fields.fldGcoLL7MbsxcYqM, 'Новая')
+  assert.equal(fields.fldBHweTFv66wTX6F, 'Полный пакет · 2 человека · 700 €')
+  assert.equal(fields.fldPRC97zQ5YEJszM, 'Не выставлено')
+  assert.equal(fields.fldGs489tE1WSyoii, 'tamara-guseva')
+  assert.equal(fields.fldsg7WxZc8RCpE2u, 'Тамара Гусева')
+  assert.equal(fields.fldm5kb8syFzU6yA3, 'anna@example.com')
+})
+
+test('Worker sends only writable fields and every select value the base accepts', async () => {
+  const { participationOptions } = await import('../src/leadForm.js')
+  const writableFieldIds = new Set([
+    'fld1eqRAgP8JINqNU', 'fldGcoLL7MbsxcYqM', 'fld2xm3nFNNe9LuYS', 'fldyyERZ7DWP7V4c9',
+    'fldm5kb8syFzU6yA3', 'fldBMRn1ayyJ0NM6S', 'fldBHweTFv66wTX6F', 'fldPRC97zQ5YEJszM',
+    'fld7INg5mP0v63ny2', 'fldCpEEc0B6XXYab3', 'fldsg7WxZc8RCpE2u', 'fldMuDqK3zJrV3KHI',
+    'flddDTr3yKdfjTbm3', 'fldGs489tE1WSyoii', 'fld05fVqziWhcjuZc', 'fldxxXpWy2v9iydW3',
+    'fldebFEpddhOLC6w7', 'fldpvOxrf57xiDDc8', 'fldURsEtBWKB12hZf', 'fldgIuKgk2fGJDcze',
+    'fldUNyg2arol016I0', 'fldUFBjnA7VepRd9J', 'fldmrTq5YpRhk0VcD', 'fldmvBgFRofravqMb',
+    'fldlpcITY18Z9F1l8', 'fldQUAVLw6hY0RCKm', 'fldY5W7ziCvvNMx4J', 'fldgj1lc5KrYhuCTj',
+    'fldFwjiiH38eIY7ID',
+  ])
+
+  for (const option of participationOptions) {
+    let airtableCall
+    const response = await handleRequest(makeRequest({ ...validPayload, participation: option.value }), env, {
+      now,
+      fetchImpl: async (url, options) => {
+        airtableCall = { url, options }
+        return new Response(JSON.stringify({ records: [{ id: 'rec-test' }] }), { status: 200 })
+      },
+    })
+
+    assert.equal(response.status, 201, `${option.value} was rejected before Airtable`)
+    const fields = JSON.parse(airtableCall.options.body).records[0].fields
+    assert.equal(fields.fldBHweTFv66wTX6F, option.label, `${option.value} maps to a different label`)
+
+    for (const fieldId of Object.keys(fields)) {
+      assert.ok(writableFieldIds.has(fieldId), `${fieldId} is not a writable field of the base`)
+    }
+    for (const value of Object.values(fields)) {
+      assert.notEqual(value, undefined)
+    }
+  }
+})
+
+test('an unknown participation code cannot reach Airtable through the prototype chain', async () => {
+  for (const code of ['constructor', '__proto__', 'toString', 'unknown-package']) {
+    const response = await handleRequest(makeRequest({ ...validPayload, participation: code }), env, {
+      now,
+      fetchImpl: async () => {
+        throw new Error('must not be called')
+      },
+    })
+    const result = await response.json()
+
+    assert.equal(response.status, 422, `${code} was not rejected`)
+    assert.ok(result.fieldErrors.participation)
+  }
 })
 
 test('temporary Airtable failure returns a retryable service error', async () => {

@@ -6,50 +6,49 @@ const MAX_FUTURE_SKEW_MS = 5 * 60 * 1000
 const CONTROL_CHARACTERS = /[\u0000-\u001f\u007f]/g
 const referralSlugSet = new Set(referralPartnerSlugs)
 
+// Labels must match the "Формат участия" single-select choices in Airtable exactly:
+// the record is created with typecast disabled, so an unknown choice is rejected.
 const participationFormats = Object.freeze({
-  forum: { label: 'Форум · 25 €', participants: 1, amount: 25 },
-  'package-1': { label: 'Полный пакет · 1 человек', participants: 1, amount: 500 },
-  'package-2': { label: 'Полный пакет · 2 человека', participants: 2, amount: 700 },
-  'package-3': { label: 'Полный пакет · 3 человека', participants: 3, amount: 800 },
-  presentation: { label: 'Самопрезентация' },
-  undecided: { label: 'Ещё выбирает' },
+  forum: 'Только форум · 25 €',
+  'package-1': 'Полный пакет · 1 человек · 500 €',
+  'package-2': 'Полный пакет · 2 человека · 700 €',
+  'package-3': 'Полный пакет · 3 человека · 800 €',
+  presentation: 'Самопрезентация на форуме',
+  undecided: 'Ещё выбираю формат',
 })
 
+// Field IDs of the "Заявки" table. Read them with `npm run airtable:schema`.
+// "Дата заявки" is a createdTime field: Airtable fills it, the Worker must not send it.
 const airtableFields = Object.freeze({
-  name: 'fld95wPxgxmRmRrcO',
-  submittedAt: 'fldu9LiGVC3e9oqeK',
-  status: 'fld87pCd4Saz42kz3',
-  telegram: 'fld8EoScMynHesWHT',
-  phone: 'fldYJg3fFWbsG8n0F',
-  email: 'flduI1VTbHMkq93vj',
-  country: 'fldnrQ7e6Spyb1rbX',
-  participation: 'fldAMhqh7XQr6ZNYX',
-  participants: 'fldrIh0z5O2L5sms1',
-  amount: 'fldlzjRPkisohRcm4',
-  paymentStatus: 'fld1BjLyWKGowPncG',
-  comment: 'fldPdiTUTyo24WalA',
-  consent: 'fldwuNgHkrwWQfZRj',
-  requestId: 'fldhwv9acWeqKSnCr',
-  leadSource: 'fld584bTozpQIgrBM',
-  refFirst: 'fldzETaDT8R3zaXeH',
-  refLast: 'fldCxIRtESaHQB3q2',
-  creditedRef: 'fldJYtM0NPR5TDC7u',
-  referrerName: 'fldNQCnboQ9horVgg',
-  utmSourceFirst: 'fld04ArDcf0pWJHce',
-  utmSourceLast: 'fldmy22AZBMmf9JJh',
-  utmMediumFirst: 'fldQYJJPyidZy3OE7',
-  utmMediumLast: 'fldYA4hj7rBZTHxYj',
-  utmCampaignFirst: 'fldDC2jnrlRk50J1K',
-  utmCampaignLast: 'fldPK6iq0dkw7BhTP',
-  utmContentFirst: 'fld2oao6BV6rmT3FY',
-  utmContentLast: 'fldqhFi3K4tt9BsE0',
-  utmTermFirst: 'fld03nyQ4YNcH1T2Q',
-  utmTermLast: 'fldUNwKsvdHN1xpk9',
-  landingFirst: 'fldWqGhCz7l9JYChC',
-  landingLast: 'fldFjcxETr0ql1MbW',
-  touchAtFirst: 'fldwxEDULTyTFvrZ2',
-  touchAtLast: 'fldHRyWZWohj0VLxg',
-  currentPath: 'fldk0eZO0H2QJwlQO',
+  name: 'fld1eqRAgP8JINqNU',
+  status: 'fldGcoLL7MbsxcYqM',
+  telegram: 'fld2xm3nFNNe9LuYS',
+  phone: 'fldyyERZ7DWP7V4c9',
+  email: 'fldm5kb8syFzU6yA3',
+  country: 'fldBMRn1ayyJ0NM6S',
+  participation: 'fldBHweTFv66wTX6F',
+  paymentStatus: 'fldPRC97zQ5YEJszM',
+  comment: 'fld7INg5mP0v63ny2',
+  consent: 'fldCpEEc0B6XXYab3',
+  refFirst: 'fldMuDqK3zJrV3KHI',
+  refLast: 'flddDTr3yKdfjTbm3',
+  creditedRef: 'fldGs489tE1WSyoii',
+  referrerName: 'fldsg7WxZc8RCpE2u',
+  utmSourceFirst: 'fld05fVqziWhcjuZc',
+  utmSourceLast: 'fldxxXpWy2v9iydW3',
+  utmMediumFirst: 'fldebFEpddhOLC6w7',
+  utmMediumLast: 'fldpvOxrf57xiDDc8',
+  utmCampaignFirst: 'fldURsEtBWKB12hZf',
+  utmCampaignLast: 'fldgIuKgk2fGJDcze',
+  utmContentFirst: 'fldUNyg2arol016I0',
+  utmContentLast: 'fldUFBjnA7VepRd9J',
+  utmTermFirst: 'fldmrTq5YpRhk0VcD',
+  utmTermLast: 'fldmvBgFRofravqMb',
+  landingFirst: 'fldlpcITY18Z9F1l8',
+  landingLast: 'fldQUAVLw6hY0RCKm',
+  touchAtFirst: 'fldY5W7ziCvvNMx4J',
+  touchAtLast: 'fldgj1lc5KrYhuCTj',
+  currentPath: 'fldFwjiiH38eIY7ID',
 })
 
 function cleanText(value, maxLength) {
@@ -203,7 +202,11 @@ export function validateLeadPayload(payload, now = Date.now()) {
   const alternateContact = cleanText(values.alternate_contact, 254)
   const country = cleanText(values.country, 80)
   const comment = cleanText(values.comment, 1_000)
-  const participation = participationFormats[values.participation]
+  const participationKey = typeof values.participation === 'string'
+    && Object.hasOwn(participationFormats, values.participation)
+    ? values.participation
+    : ''
+  const participation = participationKey ? participationFormats[participationKey] : ''
 
   if (name.length < 2 || normalizedLength(values.name) > 80) fieldErrors.name = 'Укажите корректное имя.'
   if (!telegram && !alternateContact) fieldErrors.telegram = 'Укажите Telegram или другой контакт.'
@@ -222,7 +225,7 @@ export function validateLeadPayload(payload, now = Date.now()) {
       alternateContact,
       country,
       comment,
-      participationKey: participation ? values.participation : '',
+      participationKey,
       participation,
       attribution: normalizeAttribution(values.attribution, now),
       companyWebsite: cleanText(values.company_website, 120),
@@ -234,25 +237,20 @@ function setIfPresent(fields, fieldId, value) {
   if (value !== '' && value !== undefined && value !== null) fields[fieldId] = value
 }
 
-export function buildAirtableFields(lead, requestId, now = Date.now()) {
+export function buildAirtableFields(lead) {
   const { email, phone } = splitAlternateContact(lead.alternateContact)
   const fields = {
     [airtableFields.name]: lead.name,
-    [airtableFields.submittedAt]: new Date(now).toISOString(),
     [airtableFields.status]: 'Новая',
-    [airtableFields.participation]: lead.participation.label,
+    [airtableFields.participation]: lead.participation,
     [airtableFields.paymentStatus]: 'Не выставлено',
     [airtableFields.consent]: true,
-    [airtableFields.requestId]: requestId,
-    [airtableFields.leadSource]: 'website',
   }
 
   setIfPresent(fields, airtableFields.telegram, lead.telegram)
   setIfPresent(fields, airtableFields.phone, phone)
   setIfPresent(fields, airtableFields.email, email)
   setIfPresent(fields, airtableFields.country, lead.country)
-  setIfPresent(fields, airtableFields.participants, lead.participation.participants)
-  setIfPresent(fields, airtableFields.amount, lead.participation.amount)
   setIfPresent(fields, airtableFields.comment, lead.comment)
 
   const attributionMapping = {
@@ -374,7 +372,7 @@ export async function handleRequest(request, env, { fetchImpl = fetch, now = Dat
   }
 
   const airtableUrl = `https://api.airtable.com/v0/${encodeURIComponent(env.AIRTABLE_BASE_ID)}/${encodeURIComponent(env.AIRTABLE_TABLE_ID)}`
-  const fields = buildAirtableFields(lead, requestId, now)
+  const fields = buildAirtableFields(lead)
   let airtableResponse
 
   try {

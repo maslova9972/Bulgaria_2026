@@ -11,7 +11,8 @@
     "worker:deploy": "npx wrangler deploy",
     "check": "npm run test && vite build",
     "test": "node --test tests/*.test.js",
-    "referrals": "node scripts/referral-links.mjs"
+    "referrals": "node scripts/referral-links.mjs",
+    "airtable:schema": "node scripts/airtable-schema.mjs"
   },
   "engines": {
     "node": ">=20.19.0"
