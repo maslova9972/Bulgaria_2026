@@ -3,6 +3,9 @@
   "name": "bulgaria-2026-leads",
   "main": "worker/src/index.js",
   "compatibility_date": "2026-08-10",
+  // Every deployed version would otherwise get its own public *.workers.dev URL
+  // running the same code and secrets. This endpoint handles personal data, so no.
+  "preview_urls": false,
   "vars": {
     "AIRTABLE_BASE_ID": "appjaHCUKxthrm3zI",
     "AIRTABLE_TABLE_ID": "tbl9P4xP0rrsimyo8",

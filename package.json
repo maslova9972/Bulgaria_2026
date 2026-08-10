@@ -12,7 +12,8 @@
     "check": "npm run test && vite build",
     "test": "node --test tests/*.test.js",
     "referrals": "node scripts/referral-links.mjs",
-    "airtable:schema": "node scripts/airtable-schema.mjs"
+    "airtable:schema": "node scripts/airtable-schema.mjs",
+    "worker:smoke": "node scripts/smoke-worker.mjs"
   },
   "engines": {
     "node": ">=20.19.0"
