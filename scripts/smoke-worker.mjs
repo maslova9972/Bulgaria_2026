@@ -61,8 +61,12 @@ async function run() {
 
   if (live) {
     console.log('\n--live: отправляю настоящую заявку, она появится в Airtable')
-    results.push(await probe('настоящая заявка создаёт запись', 201, { headers: json, body: validLead }))
-    console.log('Проверьте таблицу «Заявки» и удалите строку "Smoke Test".')
+    const created = await probe('настоящая заявка создаёт запись', 201, { headers: json, body: validLead })
+    results.push(created)
+    console.log(created
+      ? 'Проверьте таблицу «Заявки» и удалите строку "Smoke Test".'
+      : 'Запись не создана, удалять нечего. SERVICE_NOT_CONFIGURED = не задан секрет AIRTABLE_TOKEN;'
+        + ' CRM_SCHEMA_ERROR = расходится схема таблицы.')
   } else {
     console.log('\nЗапись в Airtable не создавалась. Полная проверка: добавьте --live')
   }
