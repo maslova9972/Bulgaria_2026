@@ -13,7 +13,7 @@ related_targets: ["src/styles.css","index.html"]
 - Mode: Persuade.
 - Audience: Russian-speaking entrepreneurs, experts, investors, and expatriates in Europe.
 - Job: make the combined business forum and Black Sea travel format clear, credible, and desirable.
-- Primary action: `Получить программу`; it leads to the contact section and organiser Natalia Maslova's Telegram `@maslovanataly`. A hidden empty slot is reserved for the future funnel form.
+- Primary action: `Получить программу`; it leads to the contact section and organiser Natalia Maslova's Telegram `@maslovanataly`. The same section conditionally renders the configured Tally application form and remains visually unchanged when no form ID is present.
 - Proof: real speakers and countries, the timed 12 September programme, real destination photography, transparent accommodation prices.
 - Constraints: React/Vite, static GitHub Pages, Russian, no backend, WCAG AA, honest claims only, fast mobile path.
 

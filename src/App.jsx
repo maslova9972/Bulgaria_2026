@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import TallyLeadForm from './TallyLeadForm.jsx'
 
 const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 
@@ -588,7 +589,7 @@ function Faq() {
   )
 }
 
-function Contact() {
+function Contact({ attribution }) {
   return (
     <section className="contact" id="contact" aria-labelledby="contact-title">
       <div>
@@ -604,8 +605,9 @@ function Contact() {
           <ArrowIcon />
         </a>
       </div>
-      {/* Future funnel embed: mount the provider form inside this slot. */}
-      <div className="lead-form-slot" id="lead-form" data-form-slot />
+      <div className="lead-form-slot" id="lead-form" data-form-slot>
+        <TallyLeadForm attribution={attribution} />
+      </div>
     </section>
   )
 }
@@ -625,7 +627,7 @@ function Footer() {
   )
 }
 
-export default function App() {
+export default function App({ attribution }) {
   return (
     <div className="atlas-site">
       <a className="skip-link" href="#main-content">
@@ -642,7 +644,7 @@ export default function App() {
         <Pricing />
         <Testimonials />
         <Faq />
-        <Contact />
+        <Contact attribution={attribution} />
       </main>
       <Footer />
     </div>

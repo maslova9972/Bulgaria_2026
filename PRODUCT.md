@@ -48,7 +48,7 @@ The single route `/` follows this order:
 8. pricing and participation formats;
 9. testimonials;
 10. FAQ;
-11. organiser contact and future form slot.
+11. organiser contact and optional embedded application form.
 
 ## Capabilities and Constraints
 
@@ -57,7 +57,9 @@ The single route `/` follows this order:
 - Static hosting on GitHub Pages.
 - Preserve confirmed dates, location, speakers, programme facts, pricing, and organiser contact.
 - Primary conversion: Natalia Maslova in Telegram, `@maslovanataly`, `https://t.me/maslovanataly`.
-- Keep an empty, non-visible `#lead-form[data-form-slot]` in the final contact section for a future sales-funnel form.
+- The final `#lead-form[data-form-slot]` renders a Tally application form only when a valid `VITE_TALLY_FORM_ID` is configured; without it, the slot stays empty and hidden.
+- Referral links use `?ref=<expert-slug>`. The browser keeps validated first- and last-referral attribution for 30 days and passes it to Tally without storing lead personal data locally.
+- Tally submissions are intended to sync into the Airtable lead pipeline; Telegram remains an available direct-contact fallback.
 - The page must be responsive, keyboard accessible, motion-safe, and usable without a backend.
 - The countdown must stop or switch to a truthful post-event state instead of displaying misleading values.
 - Do not fabricate the venue, availability, hotel identity, payment mechanics, refund terms, or the price of the separate business-presentation format.
@@ -76,7 +78,7 @@ The single route `/` follows this order:
 - Public reference page: `https://bulgaria-business-sea.lovable.app/`.
 - User-supplied event description confirms 12 September 2026, Bulgaria, eight experts, eight countries, participants from more than twelve countries, a 25 € forum ticket with coffee break, the principal programme themes, and the separate paid presentation opportunity.
 - Full-package pricing: 500 € for one person, 700 € for two, and 800 € for three for 8–13 September with hotel. Flights and transfer are excluded.
-- No analytics contract, legal copy, booking backend, private brand asset package, or confirmed embedded form provider has been supplied.
+- Tally is the selected embedded form provider and Airtable is the selected lightweight CRM. A published Tally form ID, field mapping, privacy copy, and final integration test are still required before launch.
 
 ## Product Principles
 
