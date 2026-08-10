@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Production output
+dist/
+.vite/
+coverage/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+*.local
+
+# Package-manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

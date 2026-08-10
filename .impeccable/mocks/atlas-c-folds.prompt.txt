@@ -1,0 +1,16 @@
+Use case: ui-mockup
+Asset type: high-fidelity north-star composition for a desktop landing page, landscape 16:10
+Surface structure in order: 7% compact navigation; 69% people-and-route hero; 24% visible itinerary timeline fold. This must read unmistakably as a real website surface, not a poster, editorial spread, or photograph with text.
+Product: Business & Travel Bulgaria 2026, an international business trip at Sunny Beach.
+Committed visual world: Black Sea modernist atlas inspired by Bulgarian coastal modernism, architectural field guides, cyanotype documentary images, cold mineral surfaces and precise condensed neo-grotesk Cyrillic. Preserve the supplied reference image's deep blue-black, mineral white, committed cobalt and sea-glass palette, crisp geometry and matte paper grain.
+Structural idea: the hero uses an asymmetric 12-column folded-atlas composition. Four large rectangular fields meet with visible offset seams: a mineral-white typography field covers the upper-left 52%; a panoramic Black Sea field runs through the center; a vertical documentary portrait strip occupies the far right 24%; and a cobalt action field overlaps the lower center. The folds are structural boundaries, not decorative crosshair lines. A compact date/location block pins the top-left edge. One primary CTA stays obvious.
+Hero hierarchy: Russian headline maximum two lines; short supporting line; one primary CTA; a quiet route link. Real participants are suggested through two tall documentary portrait crops on the right, treated as a factual human presence rather than equal cards.
+Next-fold proof: show the beginning of a vertical itinerary timeline with large times, concise event labels and a single documentary image crop. It starts with the main forum day and demonstrates that the visual world can hold dense practical information.
+Use only this visible real copy: "Business & Travel Bulgaria 2026", "8-13 сентября 2026", "Солнечный берег, Болгария", "Болгария: международный бизнес-тур", "Море, люди и рабочие идеи", "Получить программу", "12 сентября", "12:00", "Открытие и знакомство", "12:30", "Выступления экспертов". All other copy becomes precise abstract text lines, with no invented claims, price, capacity or speaker identity.
+Typography: expressive condensed neo-grotesk Cyrillic display, precise neutral sans body, no serif and no italic.
+Palette: #0A1724, #EEF2F2, cobalt #2857FF, sea-glass #A9C5C4.
+Materials: salt-weathered concrete, cyanotype documentary photography, matte halftone grain.
+UI character: architectural fields, one consistent 12px interactive radius, controls integrated into atlas folds, no pills or floating panels.
+Image content: credible Black Sea coast and Bulgarian modernist architecture; documentary portrait strips show non-recognizable generic adults and are clearly compositional placeholders, not claims.
+Motion implication: panels could unfold in sequence and timeline could draw vertically, shown as a static comp.
+Avoid: centered hero, left navigation rail, horizontal speaker card row, beige, gold, serif, equal cards, round avatars, glassmorphism, purple, diagonal gradient, crosshair decoration, map pins, decorative section numbers, scroll cues, browser chrome, device frame, extra readable text, watermark.

@@ -1,0 +1,16 @@
+Use case: ui-mockup
+Asset type: high-fidelity north-star composition for a desktop landing page, landscape 16:10
+Surface structure in order: 8% compact horizontal navigation; 64% typographic hero built around a full-width horizon; 28% visible speaker-roster fold. This must read unmistakably as a complete responsive website design, not a poster, travel ad or photograph with text.
+Product: Business & Travel Bulgaria 2026, an international business trip at Sunny Beach.
+Committed visual world: Black Sea modernist atlas inspired by Bulgarian coastal architecture, precise field guides, halftone cyanotype photography, cold mineral surfaces and contemporary condensed grotesk Cyrillic. Preserve the supplied reference image's deep blue-black, mineral white, committed cobalt and sea-glass palette, sharp functional geometry and matte paper grain.
+Structural idea: no left sidebar. The hero is a full-width editorial field. A massive two-line Russian headline occupies the upper half. A long low panoramic sea-and-architecture image band forms the visual horizon through the middle, partially clipping behind the headline but never reducing legibility. Dates and location form a compact factual block in the upper-right. A single cobalt vertical action tab is anchored at the right edge. Short supporting copy sits below the headline.
+Next-fold proof: an editorial roster begins immediately below with three tall portrait-photo placeholders at unequal widths, real speaker-name treatment, and one concise topic line per portrait. This is not a three-equal-card grid: it is a horizontal contact sheet with variable crops and strong baseline rhythm.
+Use only this real visible copy: "Business & Travel Bulgaria 2026", "8-13 сентября 2026", "Солнечный берег, Болгария", "Болгария: международный бизнес-тур", "6 дней у моря для новых деловых связей", "Получить программу", "Эксперты из 7 стран", "Наталья Видюл", "Виктория Батулина", "Елена Кива". All other copy must be abstract clean text lines, no invented facts.
+Hierarchy: hero headline maximum two lines, CTA visible above fold, navigation one line and under 72px high.
+Typography: characterful condensed neo-grotesk Cyrillic display with severe tight tracking; precise neutral sans body; no serif and no italic.
+Palette: #0A1724, #EEF2F2, cobalt #2857FF, sea-glass #A9C5C4.
+Materials: salt-weathered concrete, cyanotype contact-sheet photos, subtle halftone, matte grain.
+UI character: sharp architectural fields; interactive controls may have consistent 12px radius; no pills or floating glass panels.
+Image content: credible Bulgarian Black Sea horizon and modernist coastal architecture; portrait regions look like honest documentary headshots but contain no fabricated recognizable identities.
+Motion implication: the image horizon can wipe horizontally and portraits can reveal in staggered crops, shown as a static composition.
+Avoid: beige, gold, serif, centered hero, left rail, equal cards, rounded containers everywhere, glassmorphism, purple, decorative section numbers, status dots, scroll cues, browser chrome, device frames, extra readable text, watermark.

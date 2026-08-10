@@ -1,0 +1,16 @@
+Use case: ui-mockup
+Asset type: high-fidelity north-star composition for a desktop landing page, landscape 16:10
+Surface structure in order: 7% compact horizontal navigation; 74% asymmetric hero; 19% visible beginning of the next content section. Inside the hero, a fixed dark atlas rail occupies 15% on the left, the editorial canvas occupies 85%, and one panoramic coastal photo crop spans the right half. This must read unmistakably as a designed website, not a poster or a photograph with text.
+Product: Business & Travel Bulgaria 2026, an international business trip at Sunny Beach.
+Committed visual world: Black Sea modernist atlas inspired by Bulgarian coastal modernism, architectural field guides, cyanotype travel photography, cold mineral surfaces and a precise contemporary grotesk. Preserve the supplied reference image's deep blue-black, mineral white, cobalt and sea-glass system, crisp functional geometry and matte grain.
+Hero hierarchy: compact brand at top left; one-line date/location fact; a monumental two-line Russian headline crossing from white space into the panoramic image; one short supporting paragraph; one primary action and one quiet text link. A large cobalt geometric action slab anchors the lower-right reading path. The left atlas rail contains only useful orientation marks, never decorative section numbers.
+Next-fold proof: show the beginning of a spacious problem/benefit section with one large sentence and two compact factual blocks, continuing the same grid and materials.
+Use real visible copy only where listed: "Business & Travel Bulgaria 2026", "8-13 сентября 2026", "Солнечный берег, Болгария", "Болгария: международный бизнес-тур", "6 дней у моря для новых деловых связей", "Получить программу", "Смотреть маршрут", "Море и дело в одной поездке". All other copy must be clean abstract text lines, not invented claims.
+Composition: bold asymmetric 12-column grid, strong negative space, headline maximum two lines, CTA above the fold, no centered hero.
+Typography: characterful condensed neo-grotesk Cyrillic display, precise neutral sans body, no serif.
+Palette: #0A1724, #EEF2F2, committed cobalt #2857FF, sea-glass #A9C5C4.
+Materials: salt-weathered concrete, halftone cyanotype photography, fine paper grain.
+UI character: sharp geometry with one consistent 12px radius only on interactive controls; visible keyboard-quality focus affordance concept; no generic cards.
+Image content: credible Bulgarian Black Sea architecture and water, people only as distant contextual figures, no fake speaker portraits.
+Motion implication: masked photo reveal and cobalt slab that could track reading progression, shown as static composition.
+Avoid: beige, gold, serif, pill badges, equal card grids, glassmorphism, purple, device frames, browser chrome, decorative crosshair grid, section numbering, scroll cues, extra readable text, watermark.
