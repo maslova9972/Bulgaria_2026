@@ -18,6 +18,11 @@ function cleanText(value, maxLength) {
   return value.replace(controlCharacters, '').trim().slice(0, maxLength)
 }
 
+function normalizedLength(value) {
+  if (typeof value !== 'string') return 0
+  return value.replace(controlCharacters, '').trim().length
+}
+
 export function normalizeLeadEndpoint(value) {
   if (typeof value !== 'string' || !value.trim()) return ''
 
@@ -33,41 +38,48 @@ export function normalizeLeadEndpoint(value) {
 
 export function validateLeadForm(values) {
   const errors = {}
-  const name = cleanText(values.name, 100)
-  const telegram = cleanText(values.telegram, 100)
+  const name = cleanText(values.name, 80)
+  const telegram = cleanText(values.telegram, 80)
   const alternateContact = cleanText(values.alternateContact, 120)
   const country = cleanText(values.country, 80)
   const comment = cleanText(values.comment, 1_000)
 
   if (name.length < 2) errors.name = 'Укажите имя — минимум 2 символа.'
   if (telegram.length < 2) errors.telegram = 'Укажите Telegram, чтобы мы могли ответить.'
-  if (alternateContact.length > 120) errors.alternateContact = 'Контакт слишком длинный.'
-  if (country.length > 80) errors.country = 'Название страны слишком длинное.'
+  if (normalizedLength(values.name) > 80) errors.name = 'Сократите имя до 80 символов.'
+  if (normalizedLength(values.telegram) > 80) errors.telegram = 'Сократите Telegram до 80 символов.'
+  if (normalizedLength(values.alternateContact) > 120) errors.alternateContact = 'Контакт слишком длинный.'
+  if (normalizedLength(values.country) > 80) errors.country = 'Название страны слишком длинное.'
   if (!participationValues.has(values.participation)) errors.participation = 'Выберите формат участия.'
-  if (comment.length > 1_000) errors.comment = 'Сократите комментарий до 1000 символов.'
+  if (normalizedLength(values.comment) > 1_000) errors.comment = 'Сократите комментарий до 1000 символов.'
   if (!values.consent) errors.consent = 'Нужно согласие на обработку заявки.'
 
   return errors
 }
 
 export function buildLeadPayload(values, attribution = {}) {
-  const creditedPartner = findReferralPartner(attribution.credited_ref)
+  const firstPartner = findReferralPartner(attribution.ref_first)
+  const lastPartner = findReferralPartner(attribution.ref_last)
+  const creditedPartner = lastPartner || firstPartner
   const safeAttribution = Object.fromEntries(
     ATTRIBUTION_FIELD_NAMES.map((fieldName) => [
       fieldName,
       cleanText(attribution[fieldName], 240),
     ]),
   )
+  safeAttribution.ref_first = firstPartner?.slug || ''
+  safeAttribution.ref_last = lastPartner?.slug || ''
+  safeAttribution.credited_ref = creditedPartner?.slug || ''
 
   return {
-    name: cleanText(values.name, 100),
-    telegram: cleanText(values.telegram, 100),
+    name: cleanText(values.name, 80),
+    telegram: cleanText(values.telegram, 80),
     alternate_contact: cleanText(values.alternateContact, 120),
     country: cleanText(values.country, 80),
     participation: participationValues.has(values.participation) ? values.participation : '',
     comment: cleanText(values.comment, 1_000),
     consent: Boolean(values.consent),
-    website: cleanText(values.website, 120),
+    company_website: cleanText(values.website, 120),
     referrer_name: creditedPartner?.name || '',
     attribution: safeAttribution,
   }
@@ -109,6 +121,7 @@ export async function submitLead(endpoint, payload, { signal, fetchImpl = fetch 
   if (!response.ok) {
     const error = new Error(result?.message || 'Не удалось отправить заявку.')
     error.status = response.status
+    error.fieldErrors = result?.fieldErrors || null
     throw error
   }
 

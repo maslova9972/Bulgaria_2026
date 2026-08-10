@@ -109,7 +109,23 @@ blockquote {
   transition: transform 180ms ease;
 }
 
+.skip-link:not(:focus) {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .skip-link:focus {
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto;
+  clip-path: none;
   transform: translateY(0);
 }
 
@@ -1555,6 +1571,18 @@ blockquote {
 .consent-field + .field-error {
   display: block;
   margin: 0.45rem 0 0 1.95rem;
+}
+
+.turnstile-check {
+  min-height: 0;
+  margin-top: 1.25rem;
+}
+
+.turnstile-check p {
+  margin-top: 0.5rem;
+  color: #8f2633;
+  font-size: 0.68rem;
+  line-height: 1.45;
 }
 
 .lead-form__submit {

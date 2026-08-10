@@ -6,7 +6,6 @@ import {
   captureAttribution,
   normalizeReferral,
 } from '../src/attribution.js'
-import { buildTallyUrl, normalizeTallyFormId } from '../src/tally.js'
 
 class MemoryStorage {
   constructor() {
@@ -28,29 +27,32 @@ class MemoryStorage {
 
 const start = Date.parse('2026-08-10T10:00:00.000Z')
 
-test('first referral remains primary while the last referral updates', () => {
+test('the latest valid referral receives credit while first-touch history remains available', () => {
   const storage = new MemoryStorage()
 
   const first = captureAttribution({
-    search: '?ref=natalia-vidiul&utm_source=instagram&utm_campaign=launch',
+    search: '?ref=elena-kiva&utm_source=instagram&utm_campaign=launch',
     pathname: '/bulgaria/',
     storage,
     now: start,
   })
   const direct = captureAttribution({ pathname: '/bulgaria/', storage, now: start + 1_000 })
   const second = captureAttribution({
-    search: '?ref=elena-kiva&utm_source=telegram',
+    search: '?ref=natalia-maslova&utm_source=telegram',
     pathname: '/bulgaria/',
     storage,
     now: start + 2_000,
   })
 
-  assert.equal(first.ref_first, 'natalia-vidiul')
-  assert.equal(first.ref_last, 'natalia-vidiul')
-  assert.equal(direct.ref_last, 'natalia-vidiul')
-  assert.equal(second.ref_first, 'natalia-vidiul')
-  assert.equal(second.ref_last, 'elena-kiva')
-  assert.equal(second.credited_ref, 'natalia-vidiul')
+  const finalDirect = captureAttribution({ pathname: '/bulgaria/', storage, now: start + 3_000 })
+
+  assert.equal(first.ref_first, 'elena-kiva')
+  assert.equal(first.ref_last, 'elena-kiva')
+  assert.equal(direct.ref_last, 'elena-kiva')
+  assert.equal(second.ref_first, 'elena-kiva')
+  assert.equal(second.ref_last, 'natalia-maslova')
+  assert.equal(second.credited_ref, 'natalia-maslova')
+  assert.equal(finalDirect.credited_ref, 'natalia-maslova')
   assert.equal(second.utm_source_first, 'instagram')
   assert.equal(second.utm_source_last, 'telegram')
 })
@@ -114,23 +116,4 @@ test('blocked storage does not break current-page attribution', () => {
 
   assert.equal(result.ref_first, 'galina-lunina')
   assert.equal(result.current_path, '/event/')
-})
-
-test('Tally URLs include only valid IDs and known non-empty attribution fields', () => {
-  const url = new URL(buildTallyUrl('abc123', {
-    ref_first: 'natalia-vidiul',
-    ref_last: '',
-    credited_ref: 'natalia-vidiul',
-    current_path: '/bulgaria/',
-    arbitrary: 'must-not-leak',
-  }))
-
-  assert.equal(url.pathname, '/embed/abc123')
-  assert.equal(url.searchParams.get('dynamicHeight'), '1')
-  assert.equal(url.searchParams.get('ref_first'), 'natalia-vidiul')
-  assert.equal(url.searchParams.get('credited_ref'), 'natalia-vidiul')
-  assert.equal(url.searchParams.get('current_path'), '/bulgaria/')
-  assert.equal(url.searchParams.has('ref_last'), false)
-  assert.equal(url.searchParams.has('arbitrary'), false)
-  assert.equal(normalizeTallyFormId('bad/id'), '')
 })

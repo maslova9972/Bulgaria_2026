@@ -13,9 +13,9 @@ related_targets: ["src/styles.css","index.html"]
 - Mode: Persuade.
 - Audience: Russian-speaking entrepreneurs, experts, investors, and expatriates in Europe.
 - Job: make the combined business forum and Black Sea travel format clear, credible, and desirable.
-- Primary action: `Получить программу`; it leads to the contact section and organiser Natalia Maslova's Telegram `@maslovanataly`. The same section conditionally renders the configured Tally application form and remains visually unchanged when no form ID is present.
+- Primary action: `Получить программу`; it leads to the contact section and its native application form. With a valid `VITE_LEAD_ENDPOINT`, the form submits through the Cloudflare Worker into Airtable; without an endpoint it opens a prefilled application to organiser Natalia Maslova in Telegram `@maslovanataly`.
 - Proof: real speakers and countries, the timed 12 September programme, real destination photography, transparent accommodation prices.
-- Constraints: React/Vite, static GitHub Pages, Russian, no backend, WCAG AA, honest claims only, fast mobile path.
+- Constraints: React/Vite, static GitHub Pages frontend, external Cloudflare Worker for CRM delivery, Russian, WCAG AA, honest claims only, fast mobile path, functional Telegram fallback.
 
 ## Chosen direction
 
@@ -49,6 +49,7 @@ Promise and place → why the format matters → real people → exact forum day
 | Excursion mosaic | Original source photography + CSS grid |
 | Occupancy pricing | React state + semantic buttons |
 | Testimonial selector | React state + semantic buttons |
+| Native lead form | Semantic labels/inputs/select/textarea + React validation/status |
 | Reveals and horizon wipe | CSS/IntersectionObserver; content visible by default; reduced-motion path |
 
 ## Open items

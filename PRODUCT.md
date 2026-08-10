@@ -48,7 +48,7 @@ The single route `/` follows this order:
 8. pricing and participation formats;
 9. testimonials;
 10. FAQ;
-11. organiser contact and optional embedded application form.
+11. organiser contact and native application form.
 
 ## Capabilities and Constraints
 
@@ -56,11 +56,12 @@ The single route `/` follows this order:
 - One public route: `/`.
 - Static hosting on GitHub Pages.
 - Preserve confirmed dates, location, speakers, programme facts, pricing, and organiser contact.
-- Primary conversion: Natalia Maslova in Telegram, `@maslovanataly`, `https://t.me/maslovanataly`.
-- The final `#lead-form[data-form-slot]` renders a Tally application form only when a valid `VITE_TALLY_FORM_ID` is configured; without it, the slot stays empty and hidden.
-- Referral links use `?ref=<expert-slug>`. The browser keeps validated first- and last-referral attribution for 30 days and passes it to Tally without storing lead personal data locally.
-- Tally submissions are intended to sync into the Airtable lead pipeline; Telegram remains an available direct-contact fallback.
-- The page must be responsive, keyboard accessible, motion-safe, and usable without a backend.
+- Primary conversion: the native application form, with direct contact to Natalia Maslova in Telegram, `@maslovanataly`, `https://t.me/maslovanataly`, as a resilient fallback.
+- The final contact section always renders the native form. With a valid `VITE_LEAD_ENDPOINT`, it sends a JSON `POST` to a Cloudflare Worker that validates and maps the request into Airtable.
+- When `VITE_LEAD_ENDPOINT` is absent or invalid, submitting the form opens a prefilled Telegram application; network errors and the 15-second client timeout also expose the Telegram fallback without clearing the entered values.
+- Referral links use `?ref=<expert-slug>`. The browser keeps validated first- and last-referral attribution for 30 days; the latest valid referral receives visible and CRM credit while the first remains available for history. Lead personal data is never stored locally.
+- GitHub Pages remains a static frontend with no server runtime. Airtable credentials and write access exist only in the external Cloudflare Worker and must never be exposed through `VITE_*` variables.
+- The page must be responsive, keyboard accessible, motion-safe, and usable when the external lead endpoint is unavailable.
 - The countdown must stop or switch to a truthful post-event state instead of displaying misleading values.
 - Do not fabricate the venue, availability, hotel identity, payment mechanics, refund terms, or the price of the separate business-presentation format.
 
@@ -78,7 +79,7 @@ The single route `/` follows this order:
 - Public reference page: `https://bulgaria-business-sea.lovable.app/`.
 - User-supplied event description confirms 12 September 2026, Bulgaria, eight experts, eight countries, participants from more than twelve countries, a 25 € forum ticket with coffee break, the principal programme themes, and the separate paid presentation opportunity.
 - Full-package pricing: 500 € for one person, 700 € for two, and 800 € for three for 8–13 September with hotel. Flights and transfer are excluded.
-- Tally is the selected embedded form provider and Airtable is the selected lightweight CRM. A published Tally form ID, field mapping, privacy copy, and final integration test are still required before launch.
+- The native form, visible credited partner, Telegram fallback, Worker implementation, Airtable field mapping, and GitHub Pages endpoint mapping are implemented. Worker deployment, least-privilege secrets, Turnstile keys, privacy copy, and a final end-to-end production submission remain operational launch checks.
 
 ## Product Principles
 
@@ -86,7 +87,7 @@ The single route `/` follows this order:
 2. Place the main day and programme before the speaker roster so the event structure is understood first.
 3. Distinguish clearly between the one-day forum and the full package with hotel.
 4. Put real people, practical topics, and international networking ahead of generic lifestyle promises.
-5. Keep the mobile path from interest to Telegram short and obvious.
+5. Keep the mobile path from interest to the application form or Telegram fallback short and obvious.
 6. Preserve factual content while reducing repetition and reading fatigue.
 
 ## Accessibility & Inclusion

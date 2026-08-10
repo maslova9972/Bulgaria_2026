@@ -7,6 +7,7 @@ import {
   submitLead,
   validateLeadForm,
 } from './leadForm.js'
+import TurnstileWidget, { turnstileSiteKey } from './TurnstileWidget.jsx'
 
 const initialValues = {
   name: '',
@@ -31,6 +32,8 @@ export default function LeadApplicationForm({ attribution, partner }) {
   const [status, setStatus] = useState('idle')
   const [statusMessage, setStatusMessage] = useState('')
   const [lastPayload, setLastPayload] = useState(null)
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0)
   const formRef = useRef(null)
   const successRef = useRef(null)
   const telegramFallbackUrl = useMemo(
@@ -67,21 +70,24 @@ export default function LeadApplicationForm({ attribution, partner }) {
       return
     }
 
-    const payload = buildLeadPayload(values, attribution)
+    if (configuredEndpoint && turnstileSiteKey && !turnstileToken) {
+      setStatus('error')
+      setStatusMessage('Завершите проверку безопасности и отправьте заявку ещё раз.')
+      return
+    }
+
+    const payload = {
+      ...buildLeadPayload(values, attribution),
+      turnstile_token: turnstileToken,
+    }
     setLastPayload(payload)
     setErrors({})
 
     if (!configuredEndpoint) {
       const telegramUrl = buildTelegramLeadUrl(payload)
-      const telegramWindow = window.open(telegramUrl, '_blank', 'noopener,noreferrer')
-
-      if (telegramWindow) {
-        setStatus('telegram')
-        setStatusMessage('Заявка подготовлена в Telegram — осталось нажать «Отправить».')
-      } else {
-        setStatus('error')
-        setStatusMessage('Браузер заблокировал Telegram. Откройте заявку по ссылке ниже.')
-      }
+      window.open(telegramUrl, '_blank', 'noopener,noreferrer')
+      setStatus('telegram')
+      setStatusMessage('Заявка подготовлена в Telegram — осталось нажать «Отправить».')
       return
     }
 
@@ -97,12 +103,17 @@ export default function LeadApplicationForm({ attribution, partner }) {
       setValues(initialValues)
       window.requestAnimationFrame(() => successRef.current?.focus())
     } catch (error) {
+      if (error.fieldErrors) {
+        setErrors(error.fieldErrors)
+        focusFirstError()
+      }
       setStatus('error')
       setStatusMessage(
         error.name === 'AbortError'
           ? 'Сервер отвечает слишком долго. Попробуйте ещё раз или отправьте заявку в Telegram.'
           : 'Не удалось отправить заявку. Данные сохранены в форме — попробуйте снова или используйте Telegram.',
       )
+      setTurnstileResetKey((value) => value + 1)
     } finally {
       window.clearTimeout(timeout)
     }
@@ -146,7 +157,7 @@ export default function LeadApplicationForm({ attribution, partner }) {
             value={values.name}
             onChange={updateValue}
             autoComplete="name"
-            maxLength="100"
+            maxLength="80"
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? 'name-error' : undefined}
           />
@@ -162,7 +173,7 @@ export default function LeadApplicationForm({ attribution, partner }) {
             onChange={updateValue}
             placeholder="@username"
             autoComplete="off"
-            maxLength="100"
+            maxLength="80"
             aria-invalid={Boolean(errors.telegram)}
             aria-describedby={errors.telegram ? 'telegram-error' : undefined}
           />
@@ -257,8 +268,18 @@ export default function LeadApplicationForm({ attribution, partner }) {
       </label>
       <FieldError id="consent-error" message={errors.consent} />
 
+      {configuredEndpoint && (
+        <TurnstileWidget onTokenChange={setTurnstileToken} resetKey={turnstileResetKey} />
+      )}
+
       <button className="lead-form__submit" type="submit" disabled={status === 'submitting'}>
-        <span>{status === 'submitting' ? 'Отправляем…' : 'Отправить заявку'}</span>
+        <span>
+          {status === 'submitting'
+            ? 'Отправляем…'
+            : configuredEndpoint
+              ? 'Отправить заявку'
+              : 'Продолжить в Telegram'}
+        </span>
         <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
           <path d="M5 19 19 5M8 5h11v11" fill="none" stroke="currentColor" strokeWidth="1.8" />
         </svg>
@@ -275,7 +296,7 @@ export default function LeadApplicationForm({ attribution, partner }) {
 
       {!configuredEndpoint && (
         <p className="lead-form__delivery-note">
-          Сейчас заявка подтверждается одним нажатием в Telegram; после подключения CRM она будет отправляться прямо с сайта.
+          Заявка откроется в Telegram уже заполненной — останется нажать «Отправить».
         </p>
       )}
     </form>

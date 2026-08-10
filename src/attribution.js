@@ -194,7 +194,7 @@ export function flattenAttribution(record, currentPath = '/') {
   return {
     ref_first: record.firstReferral?.ref || '',
     ref_last: record.lastReferral?.ref || '',
-    credited_ref: record.firstReferral?.ref || record.lastReferral?.ref || '',
+    credited_ref: record.lastReferral?.ref || record.firstReferral?.ref || '',
     utm_source_first: firstCampaign.utm_source || '',
     utm_source_last: lastCampaign.utm_source || '',
     utm_medium_first: firstCampaign.utm_medium || '',

@@ -62,17 +62,22 @@ Vite использует относительный `base: './'`, поэтом�
 - Наталья Маслова;
 - Telegram: `@maslovanataly` — `https://t.me/maslovanataly`.
 
-В финальном contact-блоке подготовлен официальный Tally embed. Он появляется только при наличии валидного `VITE_TALLY_FORM_ID`; до этого контейнер остаётся пустым и скрытым, а Telegram продолжает работать как основной fallback.
+В финальном contact-блоке всегда доступна нативная форма: имя, Telegram, дополнительный контакт, страна, формат участия, комментарий и согласие на обработку заявки. При валидном `VITE_LEAD_ENDPOINT` она отправляет JSON-заявку в Cloudflare Worker, а Worker записывает только разрешённые поля в Airtable.
+
+Если endpoint не задан или не проходит проверку, отправка открывает заполненную заявку в Telegram `@maslovanataly`; посетителю остаётся нажать «Отправить». При блокировке нового окна форма показывает обычную ссылку на тот же заполненный текст. При сетевой ошибке или таймауте данные остаются в полях, и Telegram также доступен как fallback.
 
 Для локальной проверки создайте `.env.local`:
 
 ```env
-VITE_TALLY_FORM_ID=ваш_id_формы
+VITE_LEAD_ENDPOINT=https://your-worker.example.workers.dev/api/leads
+VITE_TURNSTILE_SITE_KEY=your_public_site_key
 ```
 
-Для GitHub Pages добавьте ID в **Settings → Secrets and variables → Actions → Variables** с именем `TALLY_FORM_ID`. Workflow уже передаёт его в production-сборку.
+`VITE_LEAD_ENDPOINT` — публичный адрес API, который Vite встраивает в клиентскую сборку. Airtable token и другие секреты должны храниться только в Cloudflare Worker Secrets; не добавляйте их в `.env.local`, GitHub Pages variables или переменные с префиксом `VITE_`.
 
-Реферальная ссылка имеет вид `?ref=slug`. Сайт хранит проверенные first/last-touch значения 30 дней и передаёт их в скрытые поля Tally; имя, телефон и другие данные заявки в браузере не сохраняются. Сгенерировать все ссылки после публикации:
+Для GitHub Pages создайте repository variables `LEAD_ENDPOINT` и, после настройки Turnstile, `TURNSTILE_SITE_KEY`: workflow уже передаёт их в Vite-сборку. Worker находится в `worker/src/index.js`, его конфигурация — в `wrangler.jsonc`; секреты добавляются только через `npx wrangler secret put …`. До фактического деплоя Worker и добавления `LEAD_ENDPOINT` production-сборка безопасно остаётся на Telegram-fallback.
+
+Реферальная ссылка имеет вид `?ref=slug`. Сайт хранит только проверенные first/last-touch значения 30 дней; зачёт и видимое имя получает последняя валидная реферальная ссылка, а первый переход сохраняется для истории. Имя, контакты и комментарий в `localStorage` не записываются. Сгенерировать все ссылки после публикации:
 
 ```bash
 npm run referrals -- https://username.github.io/repository/
