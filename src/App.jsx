@@ -1,10 +1,28 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 
-export const organizerTelegramUrl = 'https://t.me/maslovanataly'
+const organizerTelegramUrl = 'https://t.me/maslovanataly'
 
-export const speakers = [
+const forumStart = new Date('2026-09-12T12:00:00+03:00').getTime()
+
+function getTimeUntilForum() {
+  const difference = forumStart - Date.now()
+
+  if (difference <= 0) {
+    return { ended: true, days: 0, hours: 0, minutes: 0, seconds: 0 }
+  }
+
+  return {
+    ended: false,
+    days: Math.floor(difference / 86_400_000),
+    hours: Math.floor((difference / 3_600_000) % 24),
+    minutes: Math.floor((difference / 60_000) % 60),
+    seconds: Math.floor((difference / 1_000) % 60),
+  }
+}
+
+const speakers = [
   {
     name: 'Наталья Видюл',
     country: 'Болгария',
@@ -79,7 +97,7 @@ export const speakers = [
   },
 ]
 
-export const schedule = [
+const schedule = [
   ['12:00', 'Открытие и знакомство', 'Контекст дня, представление участников и первые связи.'],
   ['12:30', 'Выступления экспертов', 'Практические темы о бизнесе, деньгах, продажах и личном масштабе.'],
   ['14:00', 'Разборы и кейсы', 'Опыт участников, живые вопросы и решения из реальной практики.'],
@@ -88,7 +106,7 @@ export const schedule = [
   ['17:00', 'Свободное общение', 'Время для разговоров, продолжения знакомств и совместных планов.'],
 ]
 
-export const excursions = [
+const excursions = [
   {
     title: 'Старый Несебр',
     note: 'Прогулка по историческому городу и семейная винодельня',
@@ -116,7 +134,7 @@ export const excursions = [
   },
 ]
 
-export const options = [
+const options = [
   {
     people: 1,
     label: 'Один',
@@ -140,7 +158,7 @@ export const options = [
   },
 ]
 
-export const testimonials = [
+const testimonials = [
   {
     name: 'Надежда Порфирова',
     handle: '@modelnadiya',
@@ -175,6 +193,49 @@ function ArrowIcon() {
   )
 }
 
+function Countdown() {
+  const [remaining, setRemaining] = useState(getTimeUntilForum)
+
+  useEffect(() => {
+    if (remaining.ended) return undefined
+
+    const interval = window.setInterval(() => {
+      setRemaining(getTimeUntilForum())
+    }, 1000)
+
+    return () => window.clearInterval(interval)
+  }, [remaining.ended])
+
+  return (
+    <section className="countdown-strip" aria-labelledby="countdown-title">
+      <div className="countdown-copy">
+        <span>До главного дня</span>
+        <h2 id="countdown-title">Форум 12 сентября</h2>
+      </div>
+      {remaining.ended ? (
+        <p className="countdown-ended">Форум уже начался</p>
+      ) : (
+        <div
+          className="countdown-values"
+          aria-label={`До форума ${remaining.days} дней, ${remaining.hours} часов, ${remaining.minutes} минут, ${remaining.seconds} секунд`}
+        >
+          {[
+            ['Дней', remaining.days],
+            ['Часов', remaining.hours],
+            ['Минут', remaining.minutes],
+            ['Секунд', remaining.seconds],
+          ].map(([label, value]) => (
+            <div key={label}>
+              <strong>{String(value).padStart(2, '0')}</strong>
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  )
+}
+
 function Header() {
   return (
     <header className="site-header">
@@ -183,8 +244,8 @@ function Header() {
         <strong>Bulgaria 2026</strong>
       </a>
       <nav className="main-nav" aria-label="Основная навигация">
-        <a href="#people">Эксперты</a>
         <a href="#program">Программа</a>
+        <a href="#people">Эксперты</a>
         <a href="#price">Стоимость</a>
       </nav>
       <a className="header-action" href="#contact">
@@ -224,7 +285,9 @@ function Hero() {
 
       <a className="hero-action" href="#contact">
         <span>Получить программу</span>
-        <ArrowIcon />
+        <span className="hero-action__icon">
+          <ArrowIcon />
+        </span>
       </a>
 
       <div className="hero-index" aria-hidden="true">
@@ -238,20 +301,20 @@ function Facts() {
   return (
     <section className="facts" aria-label="Ключевые факты поездки">
       <div>
-        <span>Когда</span>
-        <strong>8–13 сентября</strong>
-      </div>
-      <div>
-        <span>Где</span>
-        <strong>Солнечный берег</strong>
-      </div>
-      <div>
         <span>Главный день</span>
-        <strong>Форум 12 сентября</strong>
+        <strong>12 сентября</strong>
       </div>
       <div>
-        <span>Формат</span>
-        <strong>Бизнес + путешествие</strong>
+        <span>География</span>
+        <strong>8 стран</strong>
+      </div>
+      <div>
+        <span>Участники</span>
+        <strong>Из 12+ стран</strong>
+      </div>
+      <div>
+        <span>Форум + кофе-брейк</span>
+        <strong>25 €</strong>
       </div>
     </section>
   )
@@ -290,7 +353,7 @@ function SpeakerRoster() {
       <div className="section-heading section-heading--split">
         <h2>Люди, с которыми начинается новый круг</h2>
         <p>
-          Девять практиков из разных стран. Бизнес, инвестиции, психология, продажи, туризм и международные команды.
+          Эксперты и участники программы из восьми стран. Бизнес, инвестиции, психология, продажи, туризм и международные команды.
         </p>
       </div>
 
@@ -322,7 +385,9 @@ function Program() {
     <section className="program section-dark" id="program">
       <div className="program-intro">
         <h2>12 сентября: основной день</h2>
-        <p>Шесть часов от первого знакомства до свободного разговора после выступлений.</p>
+        <h3>Первый Международный форум экспертов BULGARIA 2026</h3>
+        <p className="program-statline">8 экспертов. 8 стран. Участники из 12+ стран.</p>
+        <p>Один день для предпринимателей, экспертов и людей, создающих и развивающих свой бизнес в Европе.</p>
       </div>
       <ol className="timeline">
         {schedule.map(([time, title, description]) => (
@@ -335,6 +400,32 @@ function Program() {
           </li>
         ))}
       </ol>
+      <div className="program-details">
+        <p>
+          На одной площадке: практический опыт в темах <strong>масштабирования бизнеса, психологии денег, личного бренда и AI, партнёрских моделей, продаж через сообщества, международных команд и новых источников дохода.</strong>
+        </p>
+        <p>
+          Но главная ценность форума: <strong>люди, международное окружение и новые деловые связи.</strong> Здесь можно найти клиентов, партнёров и идеи для совместных проектов.
+        </p>
+        <div className="program-local">
+          <h3>Возможность для экспертов и предпринимателей Болгарии</h3>
+          <p>
+            Если вы живёте и развиваете бизнес или экспертность в Болгарии, на форуме можно представить себя, коротко рассказать о проекте, обменяться контактами и стать заметнее для международной аудитории.
+          </p>
+          <p>
+            <strong>Представление себя и бизнеса является отдельным форматом участия за дополнительную плату.</strong> Условия Наталья расскажет индивидуально.
+          </p>
+          <a className="text-link" href={organizerTelegramUrl} target="_blank" rel="noreferrer">
+            Узнать условия презентации <ArrowIcon />
+          </a>
+        </div>
+        <p className="program-evening">
+          Вечером общение продолжится в неформальной атмосфере: ужин, живая музыка и вечерняя программа в Ханском шатре.
+        </p>
+        <p className="program-quote">
+          Иногда для следующего уровня бизнеса нужен не ещё один курс. Нужны другие люди в вашем окружении.
+        </p>
+      </div>
     </section>
   )
 }
@@ -370,10 +461,28 @@ function Pricing() {
   return (
     <section className="pricing section-dark" id="price">
       <div className="pricing-copy">
-        <h2>Стоимость зависит только от размещения</h2>
+        <h2>Выберите формат участия</h2>
         <p>
-          Во всех вариантах включены пять ночей проживания и полная программа мероприятий. Перелёт и трансфер оплачиваются отдельно.
+          Можно приехать только на конференцию 12 сентября или выбрать всю шестидневную программу с проживанием.
         </p>
+        <article className="conference-pass">
+          <span>12 сентября 2026, Болгария</span>
+          <h3>Международный форум экспертов</h3>
+          <div>
+            <strong>25 €</strong>
+            <p>Участие в форуме + кофе-брейк</p>
+          </div>
+          <a href="#contact">
+            Забронировать участие <ArrowIcon />
+          </a>
+        </article>
+      </div>
+
+      <div className="price-display" aria-live="polite">
+        <div className="package-label">
+          <h3>Полный пакет с отелем</h3>
+          <p>5 ночей, форум и программа поездки. Перелёт и трансфер оплачиваются отдельно.</p>
+        </div>
         <div className="occupancy" role="group" aria-label="Количество участников в апартаментах">
           {options.map((item, index) => (
             <button
@@ -387,9 +496,6 @@ function Pricing() {
             </button>
           ))}
         </div>
-      </div>
-
-      <div className="price-display" aria-live="polite">
         <span className="price-title">{option.title}</span>
         <strong>{option.price}</strong>
         <span>{option.perPerson}</span>
@@ -398,7 +504,7 @@ function Pricing() {
           <li>Полная программа мероприятий</li>
         </ul>
         <a href="#contact" className="price-action">
-          Обсудить участие <ArrowIcon />
+          Выбрать полный пакет <ArrowIcon />
         </a>
       </div>
     </section>
@@ -450,12 +556,12 @@ function Testimonials() {
 function Faq() {
   const questions = [
     [
-      'Что входит в стоимость?',
-      'Пять ночей проживания и полная программа мероприятий. Перелёт и трансфер оплачиваются отдельно.',
+      'Какие есть форматы участия?',
+      'Только форум 12 сентября стоит 25 € и включает кофе-брейк. Полный пакет включает пять ночей проживания, форум и программу поездки.',
     ],
     [
-      'Можно приехать не на все шесть дней?',
-      'Да. Можно выбрать форум 12 сентября, морскую прогулку, экскурсионный день или отдельное мероприятие. Стоимость частичного участия уточняется по контакту поездки.',
+      'Что оплачивается отдельно?',
+      'В полном пакете отдельно оплачиваются перелёт и трансфер. Представление своего бизнеса на форуме является дополнительным платным форматом, условия можно уточнить у Натальи.',
     ],
     [
       'Где проходит поездка?',
@@ -515,7 +621,6 @@ function Footer() {
       <p className="rights-note">
         Фотоматериалы: исходная страница события.
       </p>
-      <a href="./classic.html">Классическая версия у моря</a>
     </footer>
   )
 }
@@ -528,10 +633,11 @@ export default function App() {
       </a>
       <main id="main-content">
         <Hero />
+        <Countdown />
         <Facts />
         <WhySection />
-        <SpeakerRoster />
         <Program />
+        <SpeakerRoster />
         <Excursions />
         <Pricing />
         <Testimonials />
