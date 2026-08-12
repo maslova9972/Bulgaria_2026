@@ -110,7 +110,8 @@ test('valid lead maps server-owned CRM values and latest valid referral', async 
 })
 
 test('Worker sends only writable fields and every select value the base accepts', async () => {
-  const { participationOptions } = await import('../src/leadForm.js')
+  const { participationOptions, breakfastParticipationOptions } = await import('../src/leadForm.js')
+  const allParticipationOptions = [...participationOptions, ...breakfastParticipationOptions]
   const writableFieldIds = new Set([
     'fld1eqRAgP8JINqNU', 'fldGcoLL7MbsxcYqM', 'fld2xm3nFNNe9LuYS', 'fldyyERZ7DWP7V4c9',
     'fldm5kb8syFzU6yA3', 'fldBMRn1ayyJ0NM6S', 'fldBHweTFv66wTX6F', 'fldPRC97zQ5YEJszM',
@@ -122,7 +123,7 @@ test('Worker sends only writable fields and every select value the base accepts'
     'fldFwjiiH38eIY7ID',
   ])
 
-  for (const option of participationOptions) {
+  for (const option of allParticipationOptions) {
     let airtableCall
     const response = await handleRequest(makeRequest({ ...validPayload, participation: option.value }), env, {
       now,

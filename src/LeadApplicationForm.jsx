@@ -26,7 +26,12 @@ function FieldError({ id, message }) {
   return message ? <span className="field-error" id={id}>{message}</span> : null
 }
 
-export default function LeadApplicationForm({ attribution, partner }) {
+export default function LeadApplicationForm({
+  attribution,
+  partner,
+  options = participationOptions,
+  eventTitle = 'BULGARIA 2026',
+}) {
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle')
@@ -37,8 +42,8 @@ export default function LeadApplicationForm({ attribution, partner }) {
   const formRef = useRef(null)
   const successRef = useRef(null)
   const telegramFallbackUrl = useMemo(
-    () => (lastPayload ? buildTelegramLeadUrl(lastPayload) : ''),
-    [lastPayload],
+    () => (lastPayload ? buildTelegramLeadUrl(lastPayload, { eventTitle }) : ''),
+    [lastPayload, eventTitle],
   )
 
   const updateValue = (event) => {
@@ -84,10 +89,10 @@ export default function LeadApplicationForm({ attribution, partner }) {
     setErrors({})
 
     if (!configuredEndpoint) {
-      const telegramUrl = buildTelegramLeadUrl(payload)
+      const telegramUrl = buildTelegramLeadUrl(payload, { eventTitle })
       window.open(telegramUrl, '_blank', 'noopener,noreferrer')
       setStatus('telegram')
-      setStatusMessage('Заявка подготовлена в Telegram — осталось нажать «Отправить».')
+      setStatusMessage('Заявка подготовлена в Telegram. Осталось нажать «Отправить».')
       return
     }
 
@@ -111,7 +116,7 @@ export default function LeadApplicationForm({ attribution, partner }) {
       setStatusMessage(
         error.name === 'AbortError'
           ? 'Сервер отвечает слишком долго. Попробуйте ещё раз или отправьте заявку в Telegram.'
-          : 'Не удалось отправить заявку. Данные сохранены в форме — попробуйте снова или используйте Telegram.',
+          : 'Не удалось отправить заявку. Данные сохранены в форме. Попробуйте снова или используйте Telegram.',
       )
       setTurnstileResetKey((value) => value + 1)
     } finally {
@@ -220,7 +225,7 @@ export default function LeadApplicationForm({ attribution, partner }) {
             aria-describedby={errors.participation ? 'participation-error' : undefined}
           >
             <option value="">Выберите вариант</option>
-            {participationOptions.map((option) => (
+            {options.map((option) => (
               <option value={option.value} key={option.value}>{option.label}</option>
             ))}
           </select>
@@ -296,7 +301,7 @@ export default function LeadApplicationForm({ attribution, partner }) {
 
       {!configuredEndpoint && (
         <p className="lead-form__delivery-note">
-          Заявка откроется в Telegram уже заполненной — останется нажать «Отправить».
+          Заявка откроется в Telegram уже заполненной. Останется нажать «Отправить».
         </p>
       )}
     </form>

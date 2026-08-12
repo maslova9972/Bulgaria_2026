@@ -14,6 +14,8 @@ const participationFormats = Object.freeze({
   'package-2': 'Полный пакет · 2 человека · 700 €',
   'package-3': 'Полный пакет · 3 человека · 800 €',
   presentation: 'Самопрезентация на форуме',
+  breakfast: 'Бизнес-завтрак 6 сентября · 15 €',
+  'breakfast-forum': 'Бизнес-завтрак 6 сентября и форум 12 сентября',
   undecided: 'Ещё выбираю формат',
 })
 

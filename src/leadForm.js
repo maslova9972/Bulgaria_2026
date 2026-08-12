@@ -1,16 +1,29 @@
 import { ATTRIBUTION_FIELD_NAMES } from './attribution.js'
 import { findReferralPartner } from './referralPartners.js'
 
+const undecidedOption = { value: 'undecided', label: 'Ещё выбираю формат' }
+
+// Shown on the forum landing page (index.html).
 export const participationOptions = Object.freeze([
   { value: 'forum', label: 'Только форум · 25 €' },
   { value: 'package-1', label: 'Полный пакет · 1 человек · 500 €' },
   { value: 'package-2', label: 'Полный пакет · 2 человека · 700 €' },
   { value: 'package-3', label: 'Полный пакет · 3 человека · 800 €' },
   { value: 'presentation', label: 'Самопрезентация на форуме' },
-  { value: 'undecided', label: 'Ещё выбираю формат' },
+  undecidedOption,
 ])
 
-const participationValues = new Set(participationOptions.map(({ value }) => value))
+// Shown on the business breakfast landing page (breakfast.html).
+export const breakfastParticipationOptions = Object.freeze([
+  { value: 'breakfast', label: 'Бизнес-завтрак 6 сентября · 15 €' },
+  { value: 'breakfast-forum', label: 'Бизнес-завтрак 6 сентября и форум 12 сентября' },
+  undecidedOption,
+])
+
+const knownParticipation = new Map(
+  [...participationOptions, ...breakfastParticipationOptions].map(({ value, label }) => [value, label]),
+)
+const participationValues = new Set(knownParticipation.keys())
 const controlCharacters = /[\u0000-\u001f\u007f]/g
 
 function cleanText(value, maxLength) {
@@ -44,7 +57,7 @@ export function validateLeadForm(values) {
   const country = cleanText(values.country, 80)
   const comment = cleanText(values.comment, 1_000)
 
-  if (name.length < 2) errors.name = 'Укажите имя — минимум 2 символа.'
+  if (name.length < 2) errors.name = 'Укажите имя, минимум 2 символа.'
   if (telegram.length < 2) errors.telegram = 'Укажите Telegram, чтобы мы могли ответить.'
   if (normalizedLength(values.name) > 80) errors.name = 'Сократите имя до 80 символов.'
   if (normalizedLength(values.telegram) > 80) errors.telegram = 'Сократите Telegram до 80 символов.'
@@ -85,16 +98,16 @@ export function buildLeadPayload(values, attribution = {}) {
   }
 }
 
-export function buildTelegramLeadUrl(payload) {
-  const participation = participationOptions.find(({ value }) => value === payload.participation)
+export function buildTelegramLeadUrl(payload, { eventTitle = 'BULGARIA 2026' } = {}) {
+  const participationLabel = knownParticipation.get(payload.participation)
   const lines = [
-    'Здравствуйте! Хочу оставить заявку на BULGARIA 2026.',
+    `Здравствуйте! Хочу оставить заявку на ${eventTitle}.`,
     '',
     `Имя: ${payload.name}`,
     `Telegram: ${payload.telegram}`,
     payload.alternate_contact ? `Телефон или email: ${payload.alternate_contact}` : '',
     payload.country ? `Страна: ${payload.country}` : '',
-    `Формат: ${participation?.label || payload.participation}`,
+    `Формат: ${participationLabel || payload.participation}`,
     payload.referrer_name ? `По приглашению: ${payload.referrer_name}` : '',
     payload.comment ? `Комментарий: ${payload.comment}` : '',
   ].filter(Boolean)
