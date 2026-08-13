@@ -6,6 +6,7 @@ const undecidedOption = { value: 'undecided', label: 'Ещё выбираю фо
 // Shown on the forum landing page (index.html).
 export const participationOptions = Object.freeze([
   { value: 'forum', label: 'Только форум · 25 €' },
+  { value: 'forum-with-breakfast', label: 'Форум + бизнес-ужин с экспертами · 100 €' },
   { value: 'package-1', label: 'Полный пакет · 1 человек · 500 €' },
   { value: 'package-2', label: 'Полный пакет · 2 человека · 700 €' },
   { value: 'package-3', label: 'Полный пакет · 3 человека · 800 €' },
