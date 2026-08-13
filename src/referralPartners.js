@@ -6,8 +6,8 @@ export const referralPartners = Object.freeze([
   { name: 'Галина Лунина', slug: 'galina-lunina', image: 'galina-lunina.jpg' },
   { name: 'Надежда Миколюк', slug: 'nadiia-mykoliuk', image: 'nadiia-mykoliuk-bright.jpg' },
   { name: 'Наталья Маслова', slug: 'natalia-maslova', image: 'natalia-maslova-crop2.jpg' },
-  { name: 'Nataliia Tkachenko', slug: 'nataliia-tkachenko', image: 'nataliia-tkachenko.jpg' },
-  { name: 'Nodzelska Alla', slug: 'nodzelska-alla', image: 'nodzelska-alla.jpg' },
+  { name: 'Наталья Ткаченко', slug: 'nataliia-tkachenko', image: 'nataliia-tkachenko.jpg' },
+  { name: 'Нодзельская Алла', slug: 'nodzelska-alla', image: 'nodzelska-alla.jpg' },
   { name: 'Татьяна Стихарева', slug: 'tatiana-stikhareva', image: 'tatiana-stikhareva.jpg' },
   { name: 'Тамара Гусева', slug: 'tamara-guseva', image: 'tamara-guseva.jpg' },
 ])
