@@ -1,4 +1,4 @@
-const ENTRY_PAGE_IN_PATH = /\/(?:index|breakfast)\.html(?:\/|$)/i
+const ENTRY_PAGE_IN_PATH = /\/(?:index|breakfast|legal)\.html(?:\/|$)/i
 
 export function sitePageUrl(pageName, pathname = globalThis.location?.pathname ?? '/') {
   if (!/^[a-z0-9-]+\.html$/i.test(pageName)) {

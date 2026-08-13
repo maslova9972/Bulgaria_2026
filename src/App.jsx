@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import LeadApplicationForm from './LeadApplicationForm.jsx'
 import ReadingProgress from './ReadingProgress.jsx'
 import { findReferralPartner } from './referralPartners.js'
+import { openPrivacyPreferences } from './privacyConsent.js'
 import { sitePageUrl } from './sitePages.js'
 
 const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 
 const breakfastPageUrl = sitePageUrl('breakfast.html')
+const legalPageUrl = sitePageUrl('legal.html')
 const organizerTelegramUrl = 'https://t.me/maslovanataly'
 
 const forumStart = new Date('2026-09-12T12:00:00+03:00').getTime()
@@ -627,9 +629,15 @@ function Footer() {
         <strong>Bulgaria 2026</strong>
       </div>
       <p>8–13 сентября · Солнечный берег, Болгария</p>
-      <p className="rights-note">
-        Фотоматериалы: исходная страница события.
-      </p>
+      <div className="footer-meta">
+        <nav className="footer-links" aria-label="Юридическая информация">
+          <a href={`${legalPageUrl}#provider`}>Правна информация</a>
+          <a href={`${legalPageUrl}#privacy`}>Конфиденциальность</a>
+          <a href={`${legalPageUrl}#terms`}>Условия</a>
+          <button type="button" onClick={openPrivacyPreferences}>Настройки приватности</button>
+        </nav>
+        <p className="rights-note">Фотоматериалы: исходная страница события.</p>
+      </div>
     </footer>
   )
 }

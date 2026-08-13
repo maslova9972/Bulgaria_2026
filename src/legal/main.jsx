@@ -2,14 +2,12 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import '@fontsource-variable/sofia-sans-condensed'
 import '@fontsource-variable/manrope'
-import App from './App.jsx'
-import PrivacyPreferences from './PrivacyPreferences.jsx'
-import './styles.css'
+import LegalApp from './LegalApp.jsx'
+import '../styles.css'
+import './legal.css'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <PrivacyPreferences>
-      {(attribution) => <App attribution={attribution} />}
-    </PrivacyPreferences>
+    <LegalApp />
   </React.StrictMode>,
 )

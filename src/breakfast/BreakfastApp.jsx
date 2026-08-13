@@ -3,11 +3,13 @@ import LeadApplicationForm from '../LeadApplicationForm.jsx'
 import ReadingProgress from '../ReadingProgress.jsx'
 import { breakfastParticipationOptions } from '../leadForm.js'
 import { findReferralPartner } from '../referralPartners.js'
+import { openPrivacyPreferences } from '../privacyConsent.js'
 import { sitePageUrl } from '../sitePages.js'
 
 const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 
 const forumPageUrl = sitePageUrl('index.html')
+const legalPageUrl = sitePageUrl('legal.html')
 const organizerTelegramUrl = 'https://t.me/maslovanataly'
 const eventTitle = 'BUSINESS BREAKFAST 6 сентября'
 
@@ -1018,9 +1020,17 @@ function Footer() {
         <strong>Bulgaria 2026</strong>
       </div>
       <p>6 сентября · Солнечный берег, Болгария</p>
-      <p className="rights-note">
-        <a href={forumPageUrl}>Международный форум 12 сентября</a>
-      </p>
+      <div className="footer-meta">
+        <nav className="footer-links" aria-label="Юридическая информация">
+          <a href={`${legalPageUrl}#provider`}>Правна информация</a>
+          <a href={`${legalPageUrl}#privacy`}>Конфиденциальность</a>
+          <a href={`${legalPageUrl}#terms`}>Условия</a>
+          <button type="button" onClick={openPrivacyPreferences}>Настройки приватности</button>
+        </nav>
+        <p className="rights-note">
+          <a href={forumPageUrl}>Международный форум 12 сентября</a>
+        </p>
+      </div>
     </footer>
   )
 }

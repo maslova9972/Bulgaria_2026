@@ -8,6 +8,7 @@ import {
   validateLeadForm,
 } from './leadForm.js'
 import TurnstileWidget, { turnstileSiteKey } from './TurnstileWidget.jsx'
+import { sitePageUrl } from './sitePages.js'
 
 const initialValues = {
   name: '',
@@ -21,6 +22,7 @@ const initialValues = {
 }
 
 const configuredEndpoint = normalizeLeadEndpoint(import.meta.env.VITE_LEAD_ENDPOINT || '')
+const privacyUrl = `${sitePageUrl('legal.html')}#privacy`
 
 function FieldError({ id, message }) {
   return message ? <span className="field-error" id={id}>{message}</span> : null
@@ -269,7 +271,10 @@ export default function LeadApplicationForm({
           aria-invalid={Boolean(errors.consent)}
           aria-describedby={errors.consent ? 'consent-error' : undefined}
         />
-        <span>Согласен(на) на обработку данных для ответа на эту заявку.</span>
+        <span>
+          Согласен(на) на обработку данных для ответа на эту заявку.{' '}
+          <a href={privacyUrl}>Как используются данные</a>.
+        </span>
       </label>
       <FieldError id="consent-error" message={errors.consent} />
 

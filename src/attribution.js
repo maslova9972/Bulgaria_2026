@@ -1,4 +1,5 @@
 import { referralPartnerSlugs } from './referralPartners.js'
+import { readAttributionConsent } from './privacyConsent.js'
 
 export const ATTRIBUTION_STORAGE_KEY = 'btb2026.attribution.v1'
 export const ATTRIBUTION_TTL_MS = 30 * 24 * 60 * 60 * 1000
@@ -235,10 +236,12 @@ export function captureReferralAttribution() {
   if (typeof window === 'undefined') return flattenAttribution(emptyRecord())
 
   let storage = null
-  try {
-    storage = window.localStorage
-  } catch {
-    // Some privacy modes throw while the localStorage property is being accessed.
+  if (readAttributionConsent() === 'granted') {
+    try {
+      storage = window.localStorage
+    } catch {
+      // Some privacy modes throw while the localStorage property is being accessed.
+    }
   }
 
   return captureAttribution({
@@ -246,4 +249,14 @@ export function captureReferralAttribution() {
     pathname: window.location.pathname,
     storage,
   })
+}
+
+export function clearStoredAttribution() {
+  if (typeof window === 'undefined') return
+
+  try {
+    window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY)
+  } catch {
+    // Nothing else is required when browser storage is unavailable.
+  }
 }

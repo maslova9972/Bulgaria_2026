@@ -14,6 +14,7 @@ export default defineConfig({
       input: {
         main: entry('index.html'),
         breakfast: entry('breakfast.html'),
+        legal: entry('legal.html'),
       },
     },
   },
