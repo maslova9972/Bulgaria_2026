@@ -5,37 +5,6 @@
   Здесь описаны только новые секции и игровые механики страницы.
 */
 
-/* Сквозной прогресс чтения. Работает на CSS scroll-timeline, без scroll-слушателей. */
-.reading-progress {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 90;
-  height: 3px;
-  background: var(--cobalt);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  pointer-events: none;
-}
-
-@supports (animation-timeline: scroll()) {
-  .reading-progress {
-    animation: reading-progress-grow linear both;
-    animation-timeline: scroll(root block);
-  }
-}
-
-@keyframes reading-progress-grow {
-  to {
-    transform: scaleX(1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reading-progress {
-    display: none;
-  }
-}
-
 /* Крупные секционные заголовки продолжают ряд из styles.css. */
 .problem h2,
 .lab-intro h2,

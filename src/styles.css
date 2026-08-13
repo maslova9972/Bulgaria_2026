@@ -12,6 +12,7 @@
   --text-dark-muted: #b5c8cb;
   --display: 'Sofia Sans Condensed Variable', sans-serif;
   --body: 'Manrope Variable', sans-serif;
+  --header-height: 4.75rem;
   --page-x: clamp(1rem, 4vw, 4.5rem);
   --section-y: clamp(5rem, 11vw, 10rem);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -23,7 +24,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 4.75rem;
+  scroll-padding-top: var(--header-height);
   background: var(--ink);
 }
 
@@ -101,7 +102,7 @@ blockquote {
   position: fixed;
   top: 0.75rem;
   left: 0.75rem;
-  z-index: 100;
+  z-index: 300;
   padding: 0.8rem 1rem;
   background: #fff;
   color: var(--ink);
@@ -130,10 +131,10 @@ blockquote {
 }
 
 .site-header {
-  position: absolute;
+  position: fixed;
   inset: 0 0 auto;
-  z-index: 10;
-  height: 4.75rem;
+  z-index: 200;
+  height: var(--header-height);
   display: grid;
   grid-template-columns: minmax(12rem, 1fr) auto minmax(12rem, 1fr);
   align-items: center;
@@ -142,6 +143,36 @@ blockquote {
   background: var(--ink);
   color: var(--paper);
   border-bottom: 1px solid var(--line-dark);
+}
+
+.reading-progress {
+  position: fixed;
+  inset: var(--header-height) 0 auto;
+  z-index: 210;
+  height: 3px;
+  background: var(--cobalt);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  .reading-progress {
+    animation: reading-progress-grow linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes reading-progress-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress {
+    display: none;
+  }
 }
 
 .brand {
@@ -1779,16 +1810,12 @@ blockquote {
 
 @media (max-width: 700px) {
   :root {
+    --header-height: 4rem;
     --page-x: 1rem;
     --section-y: clamp(4.5rem, 20vw, 7rem);
   }
 
-  html {
-    scroll-padding-top: 4rem;
-  }
-
   .site-header {
-    height: 4rem;
     padding-inline: 1rem;
   }
 

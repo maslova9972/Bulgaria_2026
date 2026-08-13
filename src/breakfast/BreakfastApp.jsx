@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import LeadApplicationForm from '../LeadApplicationForm.jsx'
+import ReadingProgress from '../ReadingProgress.jsx'
 import { breakfastParticipationOptions } from '../leadForm.js'
 import { findReferralPartner } from '../referralPartners.js'
+import { sitePageUrl } from '../sitePages.js'
 
 const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 
-const forumPageUrl = `${import.meta.env.BASE_URL}index.html`
+const forumPageUrl = sitePageUrl('index.html')
 const organizerTelegramUrl = 'https://t.me/maslovanataly'
 const eventTitle = 'BUSINESS BREAKFAST 6 сентября'
 
@@ -190,10 +192,6 @@ function LockIcon() {
   )
 }
 
-function ReadingProgress() {
-  return <div className="reading-progress" aria-hidden="true" />
-}
-
 function Header() {
   return (
     <header className="site-header">
@@ -218,7 +216,6 @@ function Header() {
 function Hero() {
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
-      <Header />
       <div className="hero-meta" aria-label="Дата и место">
         <span>6 сентября 2026 · 10:30</span>
         <span>BESARABIA Restaurant, Поморие</span>
@@ -1034,6 +1031,7 @@ export default function BreakfastApp({ attribution }) {
       <a className="skip-link" href="#main-content">
         Перейти к содержанию
       </a>
+      <Header />
       <ReadingProgress />
       <main id="main-content">
         <Hero />

@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import LeadApplicationForm from './LeadApplicationForm.jsx'
+import ReadingProgress from './ReadingProgress.jsx'
 import { findReferralPartner } from './referralPartners.js'
+import { sitePageUrl } from './sitePages.js'
 
 const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 
+const breakfastPageUrl = sitePageUrl('breakfast.html')
 const organizerTelegramUrl = 'https://t.me/maslovanataly'
 
 const forumStart = new Date('2026-09-12T12:00:00+03:00').getTime()
@@ -249,7 +252,7 @@ function Header() {
         <a href="#program">Программа</a>
         <a href="#people">Эксперты</a>
         <a href="#price">Стоимость</a>
-        <a href="./breakfast.html">Бизнес завтрак 6 сентября</a>
+        <a href={breakfastPageUrl}>Бизнес завтрак 6 сентября</a>
       </nav>
       <a className="header-action" href="#contact">
         <span className="header-action__full">Получить программу</span>
@@ -262,7 +265,6 @@ function Header() {
 function Hero() {
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
-      <Header />
       <div className="hero-meta" aria-label="Дата и место">
         <span>8–13 сентября 2026</span>
         <span>Солнечный берег, Болгария</span>
@@ -638,6 +640,8 @@ export default function App({ attribution }) {
       <a className="skip-link" href="#main-content">
         Перейти к содержанию
       </a>
+      <Header />
+      <ReadingProgress />
       <main id="main-content">
         <Hero />
         <Countdown />
