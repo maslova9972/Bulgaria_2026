@@ -232,8 +232,8 @@ function Hero() {
 
       <figure className="hero-panorama">
         <img
-          src={asset('hero-beach.jpg')}
-          alt="Побережье Солнечного берега у Чёрного моря"
+          src={asset('pomorie-harbor.jpg')}
+          alt="Рыбацкая гавань Поморие у Чёрного моря"
           fetchPriority="high"
         />
       </figure>

@@ -20,6 +20,13 @@ yarn-error.log*
 pnpm-debug.log*
 .impeccable/qa/*.log
 
+# Local A4 poster prototype
+/poster.html
+/src/poster.css
+/output/poster*
+/output/chrome-poster-profile/
+/.impeccable/qa/edge-referral-profile/
+
 # Editor and OS files
 .DS_Store
 Thumbs.db

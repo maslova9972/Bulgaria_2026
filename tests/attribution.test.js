@@ -6,6 +6,7 @@ import {
   captureAttribution,
   normalizeReferral,
 } from '../src/attribution.js'
+import { findReferralPartner } from '../src/referralPartners.js'
 
 class MemoryStorage {
   constructor() {
@@ -98,6 +99,21 @@ test('unknown referrals, control characters and malformed storage are ignored sa
   assert.equal(result.ref_first, '')
   assert.equal(normalizeReferral(' ELENA-KIVA '), 'elena-kiva')
   assert.equal(normalizeReferral('unknown-partner'), '')
+})
+
+test('new named referral partners are accepted by the shared allow-list', () => {
+  assert.equal(normalizeReferral('NATALIIA-TKACHENKO'), 'nataliia-tkachenko')
+  assert.equal(normalizeReferral('nodzelska-alla'), 'nodzelska-alla')
+  assert.deepEqual(findReferralPartner('nataliia-tkachenko'), {
+    name: 'Nataliia Tkachenko',
+    slug: 'nataliia-tkachenko',
+    image: 'nataliia-tkachenko.jpg',
+  })
+  assert.deepEqual(findReferralPartner('nodzelska-alla'), {
+    name: 'Nodzelska Alla',
+    slug: 'nodzelska-alla',
+    image: 'nodzelska-alla.jpg',
+  })
 })
 
 test('blocked storage does not break current-page attribution', () => {
