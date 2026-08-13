@@ -108,8 +108,11 @@ VITE_TURNSTILE_SITE_KEY=your_public_site_key
 Реферальная ссылка имеет вид `?ref=slug`. Сайт хранит только проверенные first/last-touch значения 30 дней; зачёт и видимое имя получает последняя валидная реферальная ссылка, а первый переход сохраняется для истории. Имя, контакты и комментарий в `localStorage` не записываются. Сгенерировать все ссылки после публикации:
 
 ```bash
-npm run referrals -- https://username.github.io/repository/
+npm run referrals -- https://www.bulgaria2026.com/
+npm run referrals -- https://www.bulgaria2026.com/breakfast.html
 ```
+
+После `.html` не нужен `/`: правильный вид — `breakfast.html?ref=slug`. Генератор также исправляет случайно переданный адрес `breakfast.html/`, а опубликованный `404.html` восстанавливает уже разосланные ссылки такого вида без потери UTM-параметров.
 
 Полная схема формы и подключения к Airtable описана в `CRM_SETUP.md`.
 

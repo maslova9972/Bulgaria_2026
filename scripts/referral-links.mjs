@@ -1,4 +1,5 @@
 import { referralPartners } from '../src/referralPartners.js'
+import { createReferralUrl } from './referral-url.mjs'
 
 const baseUrl = process.argv[2]
 
@@ -8,10 +9,7 @@ if (!baseUrl) {
 } else {
   try {
     for (const partner of referralPartners) {
-      const url = new URL(baseUrl)
-      url.hash = ''
-      url.searchParams.set('ref', partner.slug)
-      console.log(`${partner.name}\t${url.toString()}`)
+      console.log(`${partner.name}\t${createReferralUrl(baseUrl, partner.slug)}`)
     }
   } catch {
     console.error('Pass an absolute site URL, for example https://username.github.io/repository/')
