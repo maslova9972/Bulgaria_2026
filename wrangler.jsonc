@@ -10,9 +10,19 @@
     "AIRTABLE_BASE_ID": "appjaHCUKxthrm3zI",
     "AIRTABLE_TABLE_ID": "tbl9P4xP0rrsimyo8",
     // Origin is scheme + host only: no path, no trailing slash.
-    // The browser sends "https://maslova9972.github.io" regardless of the page path.
-    "ALLOWED_ORIGINS": ["https://maslova9972.github.io", "http://localhost:5173"],
-    "TURNSTILE_HOSTNAMES": ["maslova9972.github.io", "localhost"],
+    // The browser sends the exact scheme + host of the page, without a path or trailing slash.
+    "ALLOWED_ORIGINS": [
+      "https://www.bulgaria2026.com",
+      "https://bulgaria2026.com",
+      "https://maslova9972.github.io",
+      "http://localhost:5173"
+    ],
+    "TURNSTILE_HOSTNAMES": [
+      "www.bulgaria2026.com",
+      "bulgaria2026.com",
+      "maslova9972.github.io",
+      "localhost"
+    ],
     "TURNSTILE_ACTION": "lead_submit"
   }
 }
