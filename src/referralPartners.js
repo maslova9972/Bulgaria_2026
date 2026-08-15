@@ -10,7 +10,7 @@ export const referralPartners = Object.freeze([
   { name: 'Нодзельская Алла', slug: 'nodzelska-alla', image: 'nodzelska-alla.jpg' },
   { name: 'Татьяна Стихарева', slug: 'tatiana-stikhareva', image: 'tatiana-stikhareva.jpg' },
   { name: 'Тамара Гусева', slug: 'tamara-guseva', image: 'tamara-guseva.jpg' },
-  { name: 'Svetlana Manych', slug: 'svetlana-manych', image: 'svetlana-manych.jpg' },
+  { name: 'Светлана Манич', slug: 'svetlana-manych', image: 'svetlana-manych.jpg' },
 ])
 
 export const referralPartnerSlugs = Object.freeze(referralPartners.map(({ slug }) => slug))
