@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import HeaderNavigation from './HeaderNavigation.jsx'
 import LeadApplicationForm from './LeadApplicationForm.jsx'
 import ReadingProgress from './ReadingProgress.jsx'
 import { findReferralPartner } from './referralPartners.js'
@@ -10,6 +11,13 @@ const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 const breakfastPageUrl = sitePageUrl('breakfast.html')
 const legalPageUrl = sitePageUrl('legal.html')
 const organizerTelegramUrl = 'https://t.me/maslovanataly'
+
+const headerLinks = [
+  { href: '#program', label: 'Программа' },
+  { href: '#people', label: 'Эксперты' },
+  { href: '#price', label: 'Стоимость' },
+  { href: breakfastPageUrl, label: 'Бизнес-нетворкинг 6 сентября' },
+]
 
 const forumStart = new Date('2026-09-12T12:00:00+03:00').getTime()
 
@@ -250,16 +258,12 @@ function Header() {
         <span>Business & Travel</span>
         <strong>Bulgaria 2026</strong>
       </a>
-      <nav className="main-nav" aria-label="Основная навигация">
-        <a href="#program">Программа</a>
-        <a href="#people">Эксперты</a>
-        <a href="#price">Стоимость</a>
-        <a href={breakfastPageUrl}>Бизнес завтрак 6 сентября</a>
-      </nav>
-      <a className="header-action" href="#contact">
-        <span className="header-action__full">Получить программу</span>
-        <span className="header-action__short">Запросить</span>
-      </a>
+      <HeaderNavigation
+        links={headerLinks}
+        actionHref="#contact"
+        actionLabel="Получить программу"
+        actionShortLabel="Запросить"
+      />
     </header>
   )
 }
@@ -331,7 +335,7 @@ function WhySection() {
   return (
     <section className="why section-light" id="about">
       <div className="why-title">
-        <h2>Не выбирать между развитием и морем</h2>
+        <h2>Отдыхай, развивайся, найди своих</h2>
       </div>
       <div className="why-copy">
         <p className="lead">

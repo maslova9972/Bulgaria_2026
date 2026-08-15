@@ -10,12 +10,13 @@ const referralSlugSet = new Set(referralPartnerSlugs)
 // the record is created with typecast disabled, so an unknown choice is rejected.
 const participationFormats = Object.freeze({
   forum: 'Только форум · 25 €',
+  'forum-with-breakfast': 'Форум + бизнес-ужин с экспертами · 100 €',
   'package-1': 'Полный пакет · 1 человек · 500 €',
   'package-2': 'Полный пакет · 2 человека · 700 €',
   'package-3': 'Полный пакет · 3 человека · 800 €',
   presentation: 'Самопрезентация на форуме',
-  breakfast: 'Бизнес-завтрак 6 сентября · 15 €',
-  'breakfast-forum': 'Бизнес-завтрак 6 сентября и форум 12 сентября',
+  breakfast: 'Business Networking 6 сентября · бесплатно по приглашению',
+  'breakfast-forum': 'Business Networking 6 сентября и форум 12 сентября',
   undecided: 'Ещё выбираю формат',
 })
 

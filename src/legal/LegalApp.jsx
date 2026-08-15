@@ -86,7 +86,7 @@ function ProviderSection() {
       <LanguagePair
         bg={(
           <p>
-            Сайтът представя събитията Business & Travel Bulgaria 2026 и Business Breakfast
+            Сайтът представя събитията Business & Travel Bulgaria 2026 и Business Networking
             Bulgaria 2026. В съдържанието Наталия Маслова е посочена като организатор и
             контакт в Telegram. Това не замества задължителните правни данни на действителния
             доставчик или продавач.
@@ -94,7 +94,7 @@ function ProviderSection() {
         )}
         ru={(
           <p>
-            Сайт представляет Business & Travel Bulgaria 2026 и Business Breakfast Bulgaria
+            Сайт представляет Business & Travel Bulgaria 2026 и Business Networking Bulgaria
             2026. В материала Наталья Маслова указана как организатор и контакт в Telegram.
             Это не заменяет обязательные юридические данные фактического продавца.
           </p>
@@ -121,9 +121,9 @@ function OfferSection() {
           <p lang="ru">Пакет с отелем: 500 € за одного, 700 € за двоих или 800 € за троих. Перелёт и трансфер не включены.</p>
         </article>
         <article>
-          <h3>Business Breakfast · 06.09.2026</h3>
-          <p lang="bg">Участие в бизнес закуската — 15 €.</p>
-          <p lang="ru">Участие в бизнес-завтраке — 15 €.</p>
+          <h3>Business Networking · 06.09.2026</h3>
+          <p lang="bg">Участието в Business Networking е безплатно с персонална покана.</p>
+          <p lang="ru">Участие в Business Networking бесплатно по персональному приглашению.</p>
         </article>
       </div>
       <LanguagePair
@@ -312,7 +312,7 @@ function LegalFooter() {
       </div>
       <nav className="footer-links" aria-label="Събития / События">
         <a href={forumUrl}>Форум · 12.09</a>
-        <a href={breakfastUrl}>Business Breakfast · 06.09</a>
+        <a href={breakfastUrl}>Business Networking · 06.09</a>
       </nav>
       <p className="rights-note">Последна техническа редакция / Техническая редакция: 14.08.2026</p>
     </footer>

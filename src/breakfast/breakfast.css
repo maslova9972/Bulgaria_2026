@@ -1,5 +1,5 @@
 /*
-  Business Breakfast, 6 сентября 2026.
+  Business Networking, 6 сентября 2026.
   Расширяет систему «Черноморский модернистский атлас» из src/styles.css:
   те же токены, та же резкая геометрия, тот же единственный кобальтовый акцент.
   Здесь описаны только новые секции и игровые механики страницы.
@@ -1113,6 +1113,19 @@
   font-weight: 780;
   line-height: 0.85;
   letter-spacing: -0.045em;
+}
+
+.breakfast-pass__invite {
+  width: fit-content;
+  margin-top: 1rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--cobalt);
+  color: var(--cobalt);
+  font-size: 0.69rem;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
 }
 
 .breakfast-pass__includes {

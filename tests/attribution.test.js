@@ -104,15 +104,21 @@ test('unknown referrals, control characters and malformed storage are ignored sa
 test('new named referral partners are accepted by the shared allow-list', () => {
   assert.equal(normalizeReferral('NATALIIA-TKACHENKO'), 'nataliia-tkachenko')
   assert.equal(normalizeReferral('nodzelska-alla'), 'nodzelska-alla')
+  assert.equal(normalizeReferral('SVETLANA-MANYCH'), 'svetlana-manych')
   assert.deepEqual(findReferralPartner('nataliia-tkachenko'), {
-    name: 'Nataliia Tkachenko',
+    name: 'Наталья Ткаченко',
     slug: 'nataliia-tkachenko',
     image: 'nataliia-tkachenko.jpg',
   })
   assert.deepEqual(findReferralPartner('nodzelska-alla'), {
-    name: 'Nodzelska Alla',
+    name: 'Нодзельская Алла',
     slug: 'nodzelska-alla',
     image: 'nodzelska-alla.jpg',
+  })
+  assert.deepEqual(findReferralPartner('svetlana-manych'), {
+    name: 'Svetlana Manych',
+    slug: 'svetlana-manych',
+    image: 'svetlana-manych.jpg',
   })
 })
 

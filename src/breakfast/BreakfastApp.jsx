@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import HeaderNavigation from '../HeaderNavigation.jsx'
 import LeadApplicationForm from '../LeadApplicationForm.jsx'
 import ReadingProgress from '../ReadingProgress.jsx'
 import { breakfastParticipationOptions } from '../leadForm.js'
@@ -11,7 +12,14 @@ const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
 const forumPageUrl = sitePageUrl('index.html')
 const legalPageUrl = sitePageUrl('legal.html')
 const organizerTelegramUrl = 'https://t.me/maslovanataly'
-const eventTitle = 'BUSINESS BREAKFAST 6 сентября'
+const eventTitle = 'BUSINESS NETWORKING 6 сентября'
+
+const headerLinks = [
+  { href: forumPageUrl, label: 'Форум 12 сентября' },
+  { href: '#test', label: 'Тест' },
+  { href: '#program', label: 'Программа' },
+  { href: '#price', label: 'Участие' },
+]
 
 const breakfastStart = new Date('2026-09-06T10:30:00+03:00').getTime()
 
@@ -115,7 +123,7 @@ const quizVerdicts = [
   {
     limit: 9,
     title: 'Архитектор связей',
-    text: 'Вы работаете со связями осознанно. На завтраке ищите партнёрства и международное масштабирование.',
+    text: 'Вы работаете со связями осознанно. На встрече ищите партнёрства и международное масштабирование.',
   },
 ]
 
@@ -156,20 +164,20 @@ const audienceGroups = [
 
 const faqQuestions = [
   [
-    'Что входит в участие за 15 €?',
-    'Участие в тренинге, бизнес-нетворкинг, международная нетворкинг-сессия, рабочие материалы, чай, кофе и вода, а также персональный подарок каждому участнику.',
+    'Что входит в бесплатное участие по персональному приглашению?',
+    'Участие в тренинге, бизнес-нетворкинг, международная нетворкинг-сессия, рабочие материалы и персональный подарок каждому участнику.',
   ],
   [
     'Нужен ли опыт нетворкинга?',
     'Нет. Формат рассчитан и на тех, кто ходит на мероприятия годами, и на тех, кто только начинает выходить в деловое сообщество.',
   ],
   [
-    'Как связан завтрак 6 сентября с форумом 12 сентября?',
-    'Это два отдельных события. Бизнес-завтрак камерный, форум большой и международный. На завтраке разыгрываются билеты на форум и разбирается вся информация о нём.',
+    'Как связан Business Networking 6 сентября с форумом 12 сентября?',
+    'Это два отдельных события. Business Networking — камерная встреча, а форум — большой международный формат. На встрече разыгрываются билеты на форум и разбирается вся информация о нём.',
   ],
   [
     'Как подтвердить участие?',
-    'Оставьте короткую заявку в конце страницы. Организаторы свяжутся с вами, пришлют детали встречи и условия оплаты.',
+    'Оставьте короткую заявку в конце страницы. Организаторы свяжутся с вами, пришлют детали встречи и подтвердят персональное приглашение.',
   ],
 ]
 
@@ -197,20 +205,16 @@ function LockIcon() {
 function Header() {
   return (
     <header className="site-header">
-      <a className="brand" href="#top" aria-label="Business Breakfast Bulgaria 2026, в начало">
-        <span>Business Breakfast</span>
+      <a className="brand" href="#top" aria-label="Business Networking Bulgaria 2026, в начало">
+        <span>Business Networking</span>
         <strong>Bulgaria 2026</strong>
       </a>
-      <nav className="main-nav" aria-label="Основная навигация">
-        <a href={forumPageUrl}>Форум 12 сентября</a>
-        <a href="#test">Тест</a>
-        <a href="#program">Программа</a>
-        <a href="#price">Участие</a>
-      </nav>
-      <a className="header-action" href="#contact">
-        <span className="header-action__full">Забронировать участие</span>
-        <span className="header-action__short">Забронировать</span>
-      </a>
+      <HeaderNavigation
+        links={headerLinks}
+        actionHref="#contact"
+        actionLabel="Получить приглашение"
+        actionShortLabel="Приглашение"
+      />
     </header>
   )
 }
@@ -243,7 +247,7 @@ function Hero() {
       </p>
 
       <a className="hero-action" href="#contact">
-        <span>Забронировать участие</span>
+        <span>Получить приглашение</span>
         <span className="hero-action__icon">
           <ArrowIcon />
         </span>
@@ -268,15 +272,15 @@ function Countdown() {
   return (
     <section className="countdown-strip" aria-labelledby="countdown-title">
       <div className="countdown-copy">
-        <span>До бизнес-завтрака</span>
+        <span>До Business Networking</span>
         <h2 id="countdown-title">6 сентября, 10:30</h2>
       </div>
       {remaining.ended ? (
-        <p className="countdown-ended">Бизнес-завтрак уже начался</p>
+        <p className="countdown-ended">Business Networking уже начался</p>
       ) : (
         <div
           className="countdown-values"
-          aria-label={`До бизнес-завтрака ${remaining.days} дней, ${remaining.hours} часов, ${remaining.minutes} минут, ${remaining.seconds} секунд`}
+          aria-label={`До Business Networking ${remaining.days} дней, ${remaining.hours} часов, ${remaining.minutes} минут, ${remaining.seconds} секунд`}
         >
           {[
             ['Дней', remaining.days],
@@ -312,7 +316,7 @@ function Facts() {
       </div>
       <div>
         <span>Участие</span>
-        <strong>15 €</strong>
+        <strong>Бесплатно</strong>
       </div>
     </section>
   )
@@ -403,7 +407,7 @@ function Quiz() {
               <h3>{verdict.title}</h3>
               <p>{verdict.text}</p>
               <a className="quiz-result__action" href="#contact">
-                Забронировать участие <ArrowIcon />
+                Получить приглашение <ArrowIcon />
               </a>
               <button type="button" className="quiz-reset" onClick={() => setAnswers({})}>
                 Пройти заново
@@ -502,7 +506,7 @@ function Tools() {
           </article>
         ))}
       </div>
-      <p className="tools-note">Ещё семь инструментов вы получите на бизнес-завтраке 6 сентября.</p>
+      <p className="tools-note">Ещё семь инструментов вы получите на Business Networking 6 сентября.</p>
     </section>
   )
 }
@@ -753,7 +757,7 @@ function Gifts() {
       <div className="bridge">
         <div className="bridge__step">
           <span>6 сентября</span>
-          <strong>Business Breakfast</strong>
+          <strong>Business Networking</strong>
           <p>Камерная встреча, тренинг и международный нетворкинг.</p>
         </div>
         <div className="bridge__arrow" aria-hidden="true">
@@ -828,7 +832,7 @@ function Wheel() {
         <h2 id="wheel-title">Какой бонус ждёт вас</h2>
         <p>
           Это призовой фонд встречи. Колесо показывает, что в нём лежит. Сам розыгрыш проходит вживую
-          6 сентября среди участников бизнес-завтрака.
+          6 сентября среди участников Business Networking.
         </p>
         <ol className="wheel-legend">
           {wheelPrizes.map((prize, index) => (
@@ -880,7 +884,10 @@ function Pricing() {
     <section className="breakfast-pricing section-dark" id="price" aria-labelledby="price-title">
       <div className="breakfast-pricing__copy">
         <h2 id="price-title">Формат участия</h2>
-        <p>Один билет на бизнес-завтрак 6 сентября. Количество мест ограничено форматом встречи.</p>
+        <p>
+          Участие в Business Networking 6 сентября бесплатное по персональному приглашению. Количество мест
+          ограничено форматом встречи.
+        </p>
         <a className="text-link" href={organizerTelegramUrl} target="_blank" rel="noreferrer">
           Задать вопрос Организатору <ArrowIcon />
         </a>
@@ -888,21 +895,21 @@ function Pricing() {
 
       <article className="breakfast-pass">
         <span className="breakfast-pass__date">6 сентября 2026 · Поморие</span>
-        <h3>Бизнес-завтрак с тренингом</h3>
-        <strong className="breakfast-pass__price">15 €</strong>
+        <h3>Business Networking с тренингом</h3>
+        <strong className="breakfast-pass__price">0 €</strong>
+        <p className="breakfast-pass__invite">По персональному приглашению</p>
         <ul className="breakfast-pass__includes">
           <li>Участие в тренинге</li>
-          <li>Бизнес-завтрак</li>
+          <li>Завтрак</li>
           <li>Международная нетворкинг-сессия</li>
           <li>Рабочие материалы</li>
-          <li>Чай, кофе и вода</li>
           <li>Персональный подарок каждому участнику</li>
         </ul>
         <p className="breakfast-pass__note">
           Самые активные участники получают стратегический разбор и приглашение в международный проект.
         </p>
         <a className="breakfast-pass__action" href="#contact">
-          Забронировать участие <ArrowIcon />
+          Получить приглашение <ArrowIcon />
         </a>
       </article>
     </section>
@@ -987,9 +994,10 @@ function Contact({ attribution }) {
   return (
     <section className="contact" id="contact" aria-labelledby="contact-title">
       <div className="contact-copy">
-        <h2 id="contact-title">Забронировать участие</h2>
+        <h2 id="contact-title">Получить приглашение</h2>
         <p>
-          Оставьте контакт, и организаторы подтвердят место на бизнес-завтраке 6 сентября и пришлют детали.
+          Оставьте контакт, и организаторы подтвердят персональное приглашение на Business Networking 6 сентября и
+          пришлют детали.
         </p>
         {partner && (
           <div className="referral-attribution" role="status" aria-label={`Реферальный партнёр: ${partner.name}`}>
@@ -1016,7 +1024,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="brand brand--footer">
-        <span>Business Breakfast</span>
+        <span>Business Networking</span>
         <strong>Bulgaria 2026</strong>
       </div>
       <p>6 сентября · Солнечный берег, Болгария</p>

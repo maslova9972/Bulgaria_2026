@@ -14,10 +14,10 @@ export const participationOptions = Object.freeze([
   undecidedOption,
 ])
 
-// Shown on the business breakfast landing page (breakfast.html).
+// Shown on the Business Networking landing page (breakfast.html).
 export const breakfastParticipationOptions = Object.freeze([
-  { value: 'breakfast', label: 'Бизнес-завтрак 6 сентября · 15 €' },
-  { value: 'breakfast-forum', label: 'Бизнес-завтрак 6 сентября и форум 12 сентября' },
+  { value: 'breakfast', label: 'Business Networking 6 сентября · бесплатно по приглашению' },
+  { value: 'breakfast-forum', label: 'Business Networking 6 сентября и форум 12 сентября' },
   undecidedOption,
 ])
 

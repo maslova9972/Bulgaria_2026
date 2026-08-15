@@ -32,3 +32,5 @@ pnpm-debug.log*
 Thumbs.db
 *.swp
 *.swo
+/.tmp
+.tmp
